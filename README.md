@@ -15,8 +15,8 @@
 
 👤 **André**
 
-* Github: []()
-* LinkedIn: []()
+* Github: [@andrelcol](https://github.com/andrelcol)
+* LinkedIn: [André Luiz Cunha de Oliveira](https://www.linkedin.com/in/andr%C3%A9-luiz-cunha-de-oliveira-6665061a1/)
 
 👤 **Júlia**
 
