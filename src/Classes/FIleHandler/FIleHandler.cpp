@@ -1,5 +1,4 @@
 #include "./FileHandler.h";
-#include <sstream>
 
 FileHandler::FileHandler(char **argv)
 {
@@ -8,12 +7,37 @@ FileHandler::FileHandler(char **argv)
 
 FileHandler::~FileHandler()
 {
-
 }
 
-Grafo* AbrirArquivo()
+bool FileHandler::verificaArgv(int posicaoArgv)
 {
-    ifstream entrada;
+    if (argv[posicaoArgv] == "1")
+        return true;
+    else
+        return false;
+}
 
-    //entrada.open(argv[0]); //Abre o arquivo de entrada que esta em argv[0]
+Grafo *FileHandler::AbrirArquivo()
+{
+    string numVertices;
+    bool ehDirecionado, temPesoAresta, temPesoNos;
+    
+    ifstream arq(argv[0]);
+    getline(arq, numVertices); //Pega o numero de vertices
+    
+    ehDirecionado = verificaArgv(2);
+    temPesoAresta = verificaArgv(3);
+    temPesoNos = verificaArgv(4);
+
+    Grafo *grafo = new Grafo(stoi(numVertices), ehDirecionado, temPesoAresta, temPesoNos);
+
+    return grafo;
+}
+
+Grafo *FileHandler::SalvarArquivo(Grafo *grafo)
+{
+    ofstream saida;
+    saida.open(argv[1]);
+
+
 }

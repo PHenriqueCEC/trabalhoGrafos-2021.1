@@ -2,25 +2,28 @@
 #define FILEHANDLER_H_INCLUDED
 
 #include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
 #include <fstream>
+#include <string>
 #include "../Grafo/Grafo.h";
 
+using std::cin;
 using std::cout;
 using std::endl;
-using std::cin;
-using std::ofstream;
 using std::ifstream;
+using std::ofstream;
+using std::string;
 
-class FileHandler {
+class FileHandler
+{
 
-	public:
+public:
         FileHandler(char **argv);
         ~FileHandler();
-        Grafo* AbrirArquivo();
+        bool verificaArgv(int posicaoArgv);
+        Grafo* AbrirArquivo(); //Retorna um grafo
+        Grafo* SalvarArquivo(Grafo* grafo);    
 
-	private:
+private:
         char **argv;
 
 };
