@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "../Grafo/Grafo.h";
+#include "../Grafo/Grafo.h"
 
 using std::cin;
 using std::cout;
@@ -20,7 +20,7 @@ public:
         FileHandler(char **argv);
         ~FileHandler();
         bool verificaArgv(int posicaoArgv);
-        Grafo* AbrirArquivo(); //Retorna um grafo
+        Grafo* AbrirArquivo(); //Abre o arquivo de entrada e retorna um grafo
         Grafo* SalvarArquivo(Grafo* grafo);    
 
 private:
