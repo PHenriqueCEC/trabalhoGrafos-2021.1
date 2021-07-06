@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../Aresta/Aresta.h";
+#include "../Aresta/Aresta.h"
 
 using std::cout;
 using std::endl;

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../Aresta/Aresta.h"
-#include "../No/No.h";
+#include "../No/No.h"
 
 using std::cout;
 using std::endl;
