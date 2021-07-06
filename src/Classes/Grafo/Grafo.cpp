@@ -1,4 +1,4 @@
-#include "./Grafo.h";
+#include "./Grafo.h"
 
 Grafo::Grafo(int _numVertices, bool _direcionado, bool _arestaPonderada, 
              bool _verticePonderado)

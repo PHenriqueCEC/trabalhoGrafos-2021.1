@@ -39,5 +39,4 @@ Grafo *FileHandler::SalvarArquivo(Grafo *grafo)
     ofstream saida;
     saida.open(argv[1]);
 
-
 }
