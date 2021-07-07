@@ -11,6 +11,7 @@ FileHandler::~FileHandler()
 
 bool FileHandler::verificaArgv(int posicaoArgv)
 {
+    cout << "entrei" << endl;
     if (argv[posicaoArgv] == "1")
         return true;
     else
@@ -22,12 +23,12 @@ Grafo *FileHandler::AbrirArquivo()
     string numVertices;
     bool ehDirecionado, temPesoAresta, temPesoNos;
     
-    ifstream arq(argv[0]);
+    ifstream arq(argv[1]);
     getline(arq, numVertices); //Pega o numero de vertices
     
-    ehDirecionado = verificaArgv(2);
-    temPesoAresta = verificaArgv(3);
-    temPesoNos = verificaArgv(4);
+    ehDirecionado = verificaArgv(3);
+    temPesoAresta = verificaArgv(4);
+    temPesoNos = verificaArgv(5);
 
     Grafo *grafo = new Grafo(stoi(numVertices), ehDirecionado, temPesoAresta, temPesoNos);
 
@@ -37,6 +38,8 @@ Grafo *FileHandler::AbrirArquivo()
 Grafo *FileHandler::SalvarArquivo(Grafo *grafo)
 {
     ofstream saida;
-    saida.open(argv[1]);
+    saida.open(argv[2]);
+
+    return 0;
 
 }
