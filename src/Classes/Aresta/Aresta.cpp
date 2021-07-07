@@ -1,4 +1,4 @@
-#include "./Aresta.h";
+#include "./Aresta.h"
 
 Aresta::Aresta(float _peso){
     peso = _peso;
