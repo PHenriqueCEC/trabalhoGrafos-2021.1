@@ -42,12 +42,12 @@ void Grafo:: inserirNo()
     //N sei como implementar isso ainda
 }
 
-void Grafo::inserirArestaPonderada(int peso)
+void Grafo::inserirArestaPonderada(int primeiroNo, int segundoNo, int peso)
 {
 
 }
 
-void Grafo::inserirArestaNaoPonderada()
+void Grafo::inserirArestaNaoPonderada(int primeiroNo, int segundoNo)
 {
     
 }

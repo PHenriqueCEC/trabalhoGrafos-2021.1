@@ -21,8 +21,8 @@ class Grafo {
         int getGrau();
         int getNumVertices();
         void inserirNo();
-        void inserirArestaPonderada(int peso);
-        void inserirArestaNaoPonderada();
+        void inserirArestaPonderada(int primeiroNo, int segundoNo, int peso);
+        void inserirArestaNaoPonderada(int primeiroNo, int segundoNo);
 
     private:
         bool direcionado;

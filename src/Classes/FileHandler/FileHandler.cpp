@@ -11,7 +11,9 @@ FileHandler::~FileHandler()
 
 bool FileHandler::verificaArgv(int posicaoArgv)
 {
-    if (argv[posicaoArgv] == "1")
+    char *aux = argv[posicaoArgv];
+    
+    if (*aux == '1')
         return true;
     else
         return false;
@@ -20,9 +22,8 @@ bool FileHandler::verificaArgv(int posicaoArgv)
 //Abre o arquivo de entrada e retorna um grafo
 Grafo *FileHandler::AbrirArquivo()
 {
-    string numVertices;
+    string numVertices, peso, primeiroNo, segundoNo;
     bool ehDirecionado, arestaPonderada, pesoVertice;
-    int peso = 1;
 
     ifstream arq(argv[1]);
     getline(arq, numVertices); //Pega o numero de vertices
@@ -33,17 +34,32 @@ Grafo *FileHandler::AbrirArquivo()
 
     Grafo *grafo = new Grafo(stoi(numVertices), ehDirecionado, arestaPonderada, pesoVertice);
 
+
     if (arestaPonderada)
     {
-        //while()
-            grafo->inserirArestaPonderada(peso);
+        while(!arq.eof())
+        {
+            getline(arq, primeiroNo, ' ');
+            getline(arq, segundoNo, ' ');
+            getline(arq, peso, '\n');
+            
+            grafo->inserirArestaPonderada(stoi(primeiroNo), stoi(segundoNo), stoi(peso));
+        }
     } 
 
     else 
     {
-        //while()
-            grafo->inserirArestaNaoPonderada();
+        while(!arq.eof())
+        {
+            getline(arq, primeiroNo, ' ');
+            getline(arq, segundoNo, '\n');
+            
+            grafo->inserirArestaNaoPonderada(stoi(primeiroNo), stoi(segundoNo));
+        }
+
     }
+
+    arq.close();
 
     return grafo;
 }
@@ -54,4 +70,13 @@ void FileHandler::SalvarArquivo(Grafo *grafo)
     saida.open(argv[2]);
 
     saida << grafo->getOrdem();
+
+/*     No* no = grafo->getPrimeiroNo();
+
+    while(no != NULL)
+    {
+        Aresta* aresta = no->getPrimeiraAresta();
+
+
+    } */
 }
