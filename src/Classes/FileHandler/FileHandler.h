@@ -21,7 +21,7 @@ public:
         ~FileHandler();
         bool verificaArgv(int posicaoArgv);
         Grafo* AbrirArquivo(); //Abre o arquivo de entrada e retorna um grafo
-        Grafo* SalvarArquivo(Grafo* grafo);    
+        void SalvarArquivo(Grafo* grafo);    
 
 private:
         char **argv;

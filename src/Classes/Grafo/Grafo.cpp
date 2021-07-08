@@ -1,12 +1,12 @@
 #include "./Grafo.h"
 
 Grafo::Grafo(int _numVertices, bool _direcionado, bool _arestaPonderada, 
-             bool _verticePonderado)
+             bool _pesoVertice)
 {
     numVertices = _numVertices;
     direcionado = _direcionado;
     arestaPonderada = _arestaPonderada;
-    verticePonderado = _verticePonderado;
+    pesoVertice = _pesoVertice;
     grau = 0;
     ordem = 0;
 
@@ -40,4 +40,14 @@ int Grafo::getNumVertices()
 void Grafo:: inserirNo()
 {
     //N sei como implementar isso ainda
+}
+
+void Grafo::inserirArestaPonderada(int peso)
+{
+
+}
+
+void Grafo::inserirArestaNaoPonderada()
+{
+    
 }

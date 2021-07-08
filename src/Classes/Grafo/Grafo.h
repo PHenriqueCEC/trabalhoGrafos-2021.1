@@ -15,17 +15,19 @@ class Grafo {
 
     public:
         Grafo(int _numVertices, bool _direcionado, bool _arestaPonderada, 
-              bool _verticePonderado);
+              bool _pesoVertice);
         ~Grafo();
         int getOrdem();
         int getGrau();
         int getNumVertices();
         void inserirNo();
+        void inserirArestaPonderada(int peso);
+        void inserirArestaNaoPonderada();
 
     private:
         bool direcionado;
         bool arestaPonderada;
-        bool verticePonderado;
+        bool pesoVertice;
         int grau;
         int ordem;
         int numVertices;

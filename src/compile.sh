@@ -1,8 +1,8 @@
 echo "Começando a compilação do projeto"
 
- g++ *.c* -o execGrupo1
+cd ./Classes && g++ ./FileHandler/FileHandler.cpp ./Aresta/Aresta.cpp ./Grafo/Grafo.cpp ./No/No.cpp ../main.cpp -o ../execGrupo1
 if [ $? -eq 0 ];then 
-   echo "compilado com sucesso!"
+   echo "Compilado com sucesso! :)"
 else
-   echo "nao compilado"
+   echo "Nao compilado :("
 fi
