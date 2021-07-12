@@ -39,7 +39,13 @@ int Grafo::getNumVertices()
 {
     return numVertices;
 }
-
+/*
+int Grafo::checarVertice(int elemento) 
+{
+    for(int i = 0; i < getNumVertices() ; i++){ 
+    }    
+}
+*/
 void Grafo:: inserirNo()
 {
     //N sei como implementar isso ainda
@@ -52,5 +58,7 @@ void Grafo::inserirArestaPonderada(int primeiroNo, int segundoNo, int peso)
 
 void Grafo::inserirArestaNaoPonderada(int primeiroNo, int segundoNo)
 {
+    //entendi, mas no final das contas isso a gente resolve com um if depois
     
 }
+

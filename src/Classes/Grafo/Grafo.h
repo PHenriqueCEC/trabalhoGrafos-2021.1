@@ -23,6 +23,7 @@ class Grafo {
         void inserirNo();
         void inserirArestaPonderada(int primeiroNo, int segundoNo, int peso);
         void inserirArestaNaoPonderada(int primeiroNo, int segundoNo);
+        int checarVertice(int elemento);
 
     private:
         bool direcionado;

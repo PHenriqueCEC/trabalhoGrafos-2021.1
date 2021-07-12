@@ -21,7 +21,13 @@ void No::addGrau()
 int No::getGrau()
 {
     return grau;
+} 
+/*
+void No::setVertice(int vertice)
+{
+  vertice = valor;
 }
+*/
 
 bool No::existeNaLista(int elemento)
 {
@@ -40,7 +46,6 @@ void No::addLista(int elemento)
     lista.resize(lista.max_size() + 1);
     lista.push_back(elemento);
     grau++;
-    
   }
   else
   {

@@ -24,7 +24,8 @@ class No {
 		bool existeNaLista(int elemento);
 		
 	private:
-		int grau;
+		int grau; 
+		int vertice;
 };
 
 #endif
