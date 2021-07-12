@@ -17,11 +17,14 @@ class No {
 	public:
         No();
 		~No();
+		std::list <int> lista = {};
         int getGrau();
-
+		void addGrau();
+		void addLista(int elemento);
+		bool existeNaLista(int elemento);
+		
 	private:
 		int grau;
-
 };
 
 #endif

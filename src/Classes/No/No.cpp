@@ -4,14 +4,18 @@
 
 No::No()
 {
-  std::list <int> lista = {};
   lista.resize(0);
   int grau = 0;
-    //  
 }
 No::~No()
 {
+    lista.~list();    
+}
 
+void No::addGrau()
+{
+    grau++;
+    return; 
 }
 
 int No::getGrau()
@@ -19,7 +23,7 @@ int No::getGrau()
     return grau;
 }
 
-bool existeNaLista(int elemento)
+bool No::existeNaLista(int elemento)
 {
   for (int n : lista) 
   {
@@ -40,9 +44,8 @@ void No::addLista(int elemento)
   }
   else
   {
-    cout << "ce besta, ja tem o trem" << endl;
+    std::cout << "ce besta, ja tem o trem " << elemento << std::endl;
   }
 }
-
 
 // adicionar na lista
