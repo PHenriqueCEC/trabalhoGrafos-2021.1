@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
+#include <list>
+#include <algorithm>
 #include "../Aresta/Aresta.h"
 
 using std::cout;
