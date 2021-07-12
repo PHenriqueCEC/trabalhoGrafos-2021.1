@@ -1,5 +1,6 @@
 #include "./Grafo.h"
-
+#include "../No/No.h"
+#include <list>
 Grafo::Grafo(int _numVertices, bool _direcionado, bool _arestaPonderada, 
              bool _pesoVertice)
 {
@@ -9,6 +10,8 @@ Grafo::Grafo(int _numVertices, bool _direcionado, bool _arestaPonderada,
     pesoVertice = _pesoVertice;
     grau = 0;
     ordem = 0;
+
+    *No vetor[_numVertices];
 
     for(int i = 0; i < numVertices; i++)
     {
@@ -50,4 +53,9 @@ void Grafo::inserirArestaPonderada(int primeiroNo, int segundoNo, int peso)
 void Grafo::inserirArestaNaoPonderada(int primeiroNo, int segundoNo)
 {
     
+}
+void Grafo::addaresta (int a,int b)
+{
+    this->checkfor(a);
+    this->checkfor(b);
 }

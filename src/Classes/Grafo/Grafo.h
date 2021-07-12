@@ -31,6 +31,7 @@ class Grafo {
         int grau;
         int ordem;
         int numVertices;
+        // lista de nos
 
 };
 

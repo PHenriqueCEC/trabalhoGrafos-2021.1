@@ -18,7 +18,7 @@ int main(int argc, char **argv)
   else 
   {
     FileHandler fileHandler(argv);
-    Grafo *grafo = fileHandler.AbrirArquivo();  //Abre o arquivo de entrada e retorna um grafo
+    Grafo *grafo = fileHandlerd.AbrirArquivo();  //Abre o arquivo de entrada e retorna um grafo
   }
 
   return 0;
