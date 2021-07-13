@@ -1,6 +1,4 @@
 #include "No.h"
-#include <list>
-#include <algorithm>
 
 No::No()
 {
@@ -12,22 +10,26 @@ No::~No()
     lista.~list();    
 }
 
-void No::addGrau()
+void No::setGrau()
 {
     grau++;
-    return; 
+    //return; 
 }
 
 int No::getGrau()
 {
     return grau;
 } 
-/*
-void No::setVertice(int vertice)
+
+void No::setVertice(int valor)
 {
   vertice = valor;
 }
-*/
+
+int No::getVertice()
+{
+  return vertice;
+}
 
 bool No::existeNaLista(int elemento)
 {
@@ -43,14 +45,13 @@ void No::addLista(int elemento)
 {
   if(!existeNaLista(elemento))
   {
-    lista.resize(lista.max_size() + 1);
+    //lista.resize(lista.max_size() + 1);
     lista.push_back(elemento);
     grau++;
+    cout << "trem adicionado com sucesso " << elemento << endl;
   }
   else
   {
-    std::cout << "ce besta, ja tem o trem " << elemento << std::endl;
+    cout << "ce besta, ja tem o trem " << elemento << endl;
   }
 }
-
-// adicionar na lista

@@ -6,26 +6,32 @@
 #include <stdio.h>
 #include <list>
 #include <algorithm>
+#include <vector>
 #include "../Aresta/Aresta.h"
 
 using std::cout;
 using std::endl;
 using std::cin;
+using std::list;
+using std::vector;
 
 class No {
 
 	public:
         No();
 		~No();
-		std::list <int> lista = {};
+
         int getGrau();
-		void addGrau();
+		void setGrau();
+		int getVertice();
+		void setVertice(int vertice);
 		void addLista(int elemento);
 		bool existeNaLista(int elemento);
 		
 	private:
 		int grau; 
 		int vertice;
+		list <int> lista = {};
 };
 
 #endif

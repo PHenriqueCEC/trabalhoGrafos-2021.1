@@ -1,6 +1,6 @@
 #include "./Grafo.h"
 #include "../No/No.h"
-#include <list>
+
 Grafo::Grafo(int _numVertices, bool _direcionado, bool _arestaPonderada, 
              bool _pesoVertice)
 {
@@ -11,12 +11,8 @@ Grafo::Grafo(int _numVertices, bool _direcionado, bool _arestaPonderada,
     grau = 0;
     ordem = 0;
 
-    No vet[_numVertices];
-
-    for(int i = 0; i < numVertices; i++)
-    {
-        inserirNo();
-    }
+    vector<No> vetNos = {};
+    vetNos.resize(numVertices);
 
 }
 
@@ -39,16 +35,26 @@ int Grafo::getNumVertices()
 {
     return numVertices;
 }
-/*
-int Grafo::checarVertice(int elemento) 
+
+bool Grafo::checarVertice(int elemento) 
 {
-    for(int i = 0; i < getNumVertices() ; i++){ 
-    }    
+    for(int i = 0; i < getNumVertices(); i++)
+    { 
+        if(vetNos.at(i).getVertice() == elemento)
+        {
+            return true;
+        }
+    }   
+    return false;
 }
-*/
-void Grafo:: inserirNo()
+
+void Grafo::inserirNo(int vertice)
 {
-    //N sei como implementar isso ainda
+    if(!checarVertice(vertice))
+    {
+        vetNos.push_back();
+        //vetNos.end.setVertice(vertice);
+    }
 }
 
 void Grafo::inserirArestaPonderada(int primeiroNo, int segundoNo, int peso)
@@ -58,7 +64,6 @@ void Grafo::inserirArestaPonderada(int primeiroNo, int segundoNo, int peso)
 
 void Grafo::inserirArestaNaoPonderada(int primeiroNo, int segundoNo)
 {
-    //entendi, mas no final das contas isso a gente resolve com um if depois
-    
+  
 }
 

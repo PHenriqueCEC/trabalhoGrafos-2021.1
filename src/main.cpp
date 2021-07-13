@@ -12,7 +12,6 @@ int main(int argc, char **argv)
   if(argc != 6)
   {
     cout << argc << endl;
-    cout << "entrei aqui" << argc << endl;
     cout << "ERRO! Verifique se os parametros foram passados corretamente!" << endl;
   }
   else 
@@ -20,6 +19,8 @@ int main(int argc, char **argv)
     FileHandler fileHandler(argv);
     Grafo *grafo = fileHandler.AbrirArquivo();  //Abre o arquivo de entrada e retorna um grafo
   }
+
+  
 
   return 0;
 }
