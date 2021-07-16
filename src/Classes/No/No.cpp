@@ -34,19 +34,10 @@ int No::getVertice()
 
 bool No::existeNaLista(int elemento)
 { 
-    //int existe = find(lista.begin(), lista.end(), elemento);
-
     if(find(lista.begin(), lista.end(), elemento) != lista.end()) //Se não funcionar, testar usando o método count
       return true;
     else 
       return false;
-
-/*
-    if(existe != lista.end())
-      return true; 
-    else
-      return false;    
-*/
 }
 
 void No::addLista(int elemento)
@@ -66,9 +57,6 @@ void No::addLista(int elemento)
 
  void No::imprimeLista()
 {
-  
   for(auto print : lista)
     cout << print << " " << endl;
-
-
 } 

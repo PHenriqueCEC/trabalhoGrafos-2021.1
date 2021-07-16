@@ -67,7 +67,7 @@ int Grafo::pegarVertice(int elemento)
             return i;
         }
     }   
-    return -1;
+    return -1; //Vertice nao encontrado
 }
 
 void Grafo::inserirNo(int vertice)
@@ -87,15 +87,32 @@ void Grafo::inserirArestaNaoPonderada(int primeiroNo, int segundoNo)
 {
     if(direcionado == true)
     {
-        int a = pegarVertice(primeiroNo);
-        for(int i = 0; i < vetNos.size() ; i++)
+        int a = pegarVertice(primeiroNo); // a recebe a posicao
+        
+        if (a != -1)
         {
-            if( primeiroNo == vetNos[i].getVertice())
-            {
-                vetNos[i].addLista(segundoNo);
-            }
+
+                if( primeiroNo == vetNos[a].getVertice())
+                {
+                    vetNos[a].addLista(segundoNo);
+                }
+
+
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
     else
     {
         int a = pegarVertice (primeiroNo);
