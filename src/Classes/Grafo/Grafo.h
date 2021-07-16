@@ -28,8 +28,8 @@ class Grafo
         int getNumVertices();
         int pegarVertice(int elemento);
         void inserirNo(int vertice);
-        void inserirArestaPonderada(int primeiroNo, int segundoNo, int peso);
-        void inserirArestaNaoPonderada(int primeiroNo, int segundoNo);
+        void inserirAresta(int primeiroNo, int segundoNo);
+        void inserirAresta(int primeiroNo, int segundoNo, int peso);
         bool checarVertice(int elemento);
         void imprimeGrafo();
 

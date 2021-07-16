@@ -43,7 +43,7 @@ Grafo *FileHandler::AbrirArquivo()
             getline(arq, segundoNo, ' ');
             getline(arq, peso, '\n');
             
-            grafo->inserirArestaPonderada(stoi(primeiroNo), stoi(segundoNo), stoi(peso));
+            grafo->inserirAresta(stoi(primeiroNo), stoi(segundoNo), stoi(peso));
         }
     } 
 
@@ -54,7 +54,7 @@ Grafo *FileHandler::AbrirArquivo()
             getline(arq, primeiroNo, ' ');
             getline(arq, segundoNo, '\n');
             
-            grafo->inserirArestaNaoPonderada(stoi(primeiroNo), stoi(segundoNo));
+            grafo->inserirAresta(stoi(primeiroNo), stoi(segundoNo));
         }
 
     }
