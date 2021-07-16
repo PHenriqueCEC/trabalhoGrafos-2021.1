@@ -66,8 +66,9 @@ void No::addLista(int elemento)
 
  void No::imprimeLista()
 {
-  for (int i ; i<lista.size() ; i++)
-  {
-  //  cout << lista[i] << " ";
-  }
+  
+  for(auto print : lista)
+    cout << print << " " << endl;
+
+
 } 
