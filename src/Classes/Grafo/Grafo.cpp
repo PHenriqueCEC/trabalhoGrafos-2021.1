@@ -26,6 +26,16 @@ int Grafo::getOrdem()
     return ordem;
 }
 
+
+
+void Grafo::setGrauGrafo()
+{
+    for(int i = 0; i < vetNos.size(); i++)
+    {
+        grau = grau + vetNos[i].getGrau(); // talvez tenha um +1 no vetNos[i].getGrau()
+    }                                      // a ser testado
+}
+
 int Grafo::getGrau()
 {
     return grau;
@@ -48,12 +58,23 @@ bool Grafo::checarVertice(int elemento)
     return false;
 }
 
+int Grafo::pegarVertice(int elemento) 
+{
+    for(int i = 0; i < getNumVertices(); i++)
+    { 
+        if(vetNos.at(i).getVertice() == elemento)
+        {
+            return i;
+        }
+    }   
+    return -1;
+}
+
 void Grafo::inserirNo(int vertice)
 {
     if(!checarVertice(vertice))
     {
-        vetNos.push_back();
-        //vetNos.end.setVertice(vertice);
+        vetNos.push_back(No());
     }
 }
 
@@ -64,6 +85,39 @@ void Grafo::inserirArestaPonderada(int primeiroNo, int segundoNo, int peso)
 
 void Grafo::inserirArestaNaoPonderada(int primeiroNo, int segundoNo)
 {
-  
+    if(direcionado == true)
+    {
+        int a = pegarVertice(primeiroNo);
+        for(int i = 0; i < vetNos.size() ; i++)
+        {
+            if( primeiroNo == vetNos[i].getVertice())
+            {
+                vetNos[i].addLista(segundoNo);
+            }
+        }
+    }
+    else
+    {
+        int a = pegarVertice (primeiroNo);
+        for(int i = 0; i < vetNos.size() ; i++)
+        {
+            if( primeiroNo == vetNos[i].getVertice())
+            {
+                vetNos[i].addLista(segundoNo);
+            }
+        }
+    }
+
+
+}
+
+void Grafo::imprimeGrafo()
+{
+    for(int i = 0; i < vetNos.size() ; i++)
+    {
+        std::cout << "indice: " << i << "Vertice: " << vetNos[i].getVertice() << " - ";
+        vetNos[i].imprimeLista();
+        cout << endl;
+    }
 }
 

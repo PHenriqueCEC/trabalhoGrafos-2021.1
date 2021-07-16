@@ -4,21 +4,22 @@ No::No()
 {
   lista.resize(0);
   int grau = 0;
+
 }
+
 No::~No()
 {
-    lista.~list();    
+  lista.~list();    
 }
 
 void No::setGrau()
 {
-    grau++;
-    //return; 
+  grau = lista.size();
 }
 
 int No::getGrau()
 {
-    return grau;
+  return grau;
 } 
 
 void No::setVertice(int valor)
@@ -32,13 +33,20 @@ int No::getVertice()
 }
 
 bool No::existeNaLista(int elemento)
-{
-  for (int n : lista) 
-  {
-    if(n == elemento)
+{ 
+    //int existe = find(lista.begin(), lista.end(), elemento);
+
+    if(find(lista.begin(), lista.end(), elemento) != lista.end()) //Se não funcionar, testar usando o método count
       return true;
-  }
-  return false;
+    else 
+      return false;
+
+/*
+    if(existe != lista.end())
+      return true; 
+    else
+      return false;    
+*/
 }
 
 void No::addLista(int elemento)
@@ -55,3 +63,11 @@ void No::addLista(int elemento)
     cout << "ce besta, ja tem o trem " << elemento << endl;
   }
 }
+
+ void No::imprimeLista()
+{
+  for (int i ; i<lista.size() ; i++)
+  {
+  //  cout << lista[i] << " ";
+  }
+} 

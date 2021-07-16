@@ -13,14 +13,13 @@ int main(int argc, char **argv)
   {
     cout << argc << endl;
     cout << "ERRO! Verifique se os parametros foram passados corretamente!" << endl;
+    exit(1);
   }
-  else 
-  {
     FileHandler fileHandler(argv);
     Grafo *grafo = fileHandler.AbrirArquivo();  //Abre o arquivo de entrada e retorna um grafo
-  }
 
-  
+  cout << "Grau do Grafo: " << grafo->getGrau() << " // Numero de Vertices: " << grafo->getNumVertices()  << endl;
+  grafo->imprimeGrafo();
 
   return 0;
 }

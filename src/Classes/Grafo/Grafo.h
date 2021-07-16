@@ -24,12 +24,14 @@ class Grafo
         ~Grafo();
         int getOrdem();
         int getGrau();
+        void setGrauGrafo();
         int getNumVertices();
+        int pegarVertice(int elemento);
         void inserirNo(int vertice);
         void inserirArestaPonderada(int primeiroNo, int segundoNo, int peso);
         void inserirArestaNaoPonderada(int primeiroNo, int segundoNo);
         bool checarVertice(int elemento);
-        vector<No> vetNos;
+        void imprimeGrafo();
 
     private:
         bool direcionado;
@@ -39,6 +41,8 @@ class Grafo
         int grau;
         int ordem;
         int numVertices;
+
+        vector<No> vetNos;
 
 };
 

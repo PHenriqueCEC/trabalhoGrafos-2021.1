@@ -14,6 +14,7 @@ using std::endl;
 using std::cin;
 using std::list;
 using std::vector;
+using std::find;
 
 class No {
 
@@ -27,6 +28,7 @@ class No {
 		void setVertice(int vertice);
 		void addLista(int elemento);
 		bool existeNaLista(int elemento);
+		void imprimeLista();
 		
 	private:
 		int grau; 
