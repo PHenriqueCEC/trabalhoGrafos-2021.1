@@ -1,8 +1,9 @@
 #include "No.h"
 
-No::No()
+No::No(int _vertice)
 {
   lista.resize(0);
+  int vertice = _vertice; 
   int grau = 0;
 
 }

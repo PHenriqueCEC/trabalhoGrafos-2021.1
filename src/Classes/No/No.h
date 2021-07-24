@@ -19,7 +19,7 @@ using std::find;
 class No {
 
 	public:
-        No();
+        No(int _vertice);
 		~No();
 
         int getGrau();

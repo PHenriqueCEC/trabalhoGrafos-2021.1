@@ -26,8 +26,6 @@ int Grafo::getOrdem()
     return ordem;
 }
 
-
-
 void Grafo::setGrauGrafo()
 {
     for(int i = 0; i < vetNos.size(); i++)
@@ -60,6 +58,7 @@ bool Grafo::checarVertice(int elemento)
 
 int Grafo::pegarVertice(int elemento) 
 {
+    
     for(int i = 0; i < getNumVertices(); i++)
     { 
         if(vetNos.at(i).getVertice() == elemento)
@@ -147,6 +146,7 @@ void Grafo::inserirAresta(int primeiroNo, int segundoNo)
     else
     {
         int a = pegarVertice (primeiroNo), b = pegarVertice(segundoNo);
+        
         if (a == -1)
         {
             vetNos.push_back(No());
@@ -171,7 +171,6 @@ void Grafo::inserirAresta(int primeiroNo, int segundoNo)
 
 }
 
-
 void Grafo::imprimeGrafo()
 {
     for(int i = 0 ; i < vetNos.size() ; i++)
@@ -181,4 +180,3 @@ void Grafo::imprimeGrafo()
         cout << endl;
     }
 }
-
