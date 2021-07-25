@@ -36,6 +36,8 @@ class Graph{
         bool getWeightedNode();
         Node* getFirstNode();
         Node* getLastNode();
+        Node* getNodeById(int id);
+        int getNumberNodes();
         //Other methods
         void insertNode(int id);
         void insertEdge(int id, int target_id, float weight);
@@ -46,7 +48,7 @@ class Graph{
         //methods phase1
         void topologicalSorting();
         void breadthFirstSearch(ofstream& output_file);
-        Graoh* getVertexInduced(int* listIdNodes);
+        Graph* getVertexInduced(int* listIdNodes);
         Graph* agmKuskal();
         Graph* agmPrim();
         float floydMarshall(int idSource, int idTarget);
