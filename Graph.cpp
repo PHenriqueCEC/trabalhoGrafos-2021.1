@@ -6,6 +6,7 @@
 #include <stack>
 #include <queue>
 #include <list>
+#include <vector>
 #include <math.h>
 #include <cstdlib>
 #include <ctime>
@@ -98,17 +99,20 @@ Node *Graph::getLastNode()
 int Graph::getNumberNodes()
 {
     int i = 0;
-    for (Node *p = this->getFirstNode(); p != nullptr; p = p->getNextNode())
+   
+    for (Node *p = getFirstNode(); p != nullptr; p = p->getNextNode())
     {
         i++;
     }
+    
     return i;
 }
 
-Node *Graph::getNodeById(int id)
+Node *Graph::getNodeId(int id)
 {
-    Node *p = this->first_node;
-    for (; p != nullptr;)
+    Node *p = first_node;
+    
+    while(p != nullptr)
     {
         if (p->getId() == id)
             return p;
@@ -119,18 +123,18 @@ Node *Graph::getNodeById(int id)
 
 void Graph::insertNode(int id)
 {
-    if (getNodeById(id) != nullptr)
+    if(getNodeId(id) != nullptr)
     {
         return;
     }
 
-    int quant = getNumberNodes();
-    Node *p = new Node(id, quant);
+    int numberNodes = getNumberNodes();
+    Node *p = new Node(id, numberNodes);
 
     if (last_node == nullptr)
     {
-        last_node = p;
         first_node = p;
+        last_node = p;
     }
 
     else
@@ -142,6 +146,7 @@ void Graph::insertNode(int id)
 
 void Graph::insertEdge(int id, int target_id, float weight)
 {
+    
 }
 
 void Graph::removeNode(int id)

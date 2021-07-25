@@ -36,7 +36,7 @@ class Graph{
         bool getWeightedNode();
         Node* getFirstNode();
         Node* getLastNode();
-        Node* getNodeById(int id);
+        Node* getNodeId(int id);
         int getNumberNodes();
         //Other methods
         void insertNode(int id);

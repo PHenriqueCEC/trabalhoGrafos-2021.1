@@ -9,9 +9,10 @@ using namespace std;
 **************************************************************************************************/
 
 // Constructor
-Node::Node(int id){
+Node::Node(int _id, int _index){
 
-    this->id = id;
+    id = _id;
+    index = _index;
     this->in_degree = 0;
     this->out_degree = 0;
     this->weight = 0;

@@ -16,6 +16,7 @@ class Node{
         Edge* first_edge;
         Edge* last_edge;
         int id;
+        int index;
         unsigned int in_degree;
         unsigned int out_degree;
         float weight;
@@ -23,7 +24,7 @@ class Node{
 
     public:
         // Constructor
-        Node(int id);
+        Node(int _id, int _index);
         // Destructor
         ~Node();
         // Getters
