@@ -20,7 +20,7 @@ using namespace std;
 **************************************************************************************************/
 
 // Constructor
-Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node, int _number_nodes)
+Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node)
 {
 
     this->order = order;
@@ -29,7 +29,8 @@ Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node, i
     this->weighted_node = weighted_node;
     this->first_node = this->last_node = nullptr;
     this->number_edges = 0;
-    number_nodes = _number_nodes;
+    //number_nodes = _number_nodes;
+    adj = new list<int>[getNumberNodes()];
 }
 
 // Destructor
@@ -223,10 +224,50 @@ Node *Graph::getNode(int id)
 }
 
 //Function that prints a set of edges belongs breadth tree
-
 void Graph::breadthFirstSearch(ofstream &output_file)
 {
+    int number_nodes = getNumberNodes();
     
+    // inicializa os vertices como nao visitados
+    bool *visited = new bool[number_nodes];
+    for(int i = 0; i < number_nodes; i++)
+        visited[i] = false;
+ 
+    // Cria uma queue
+    list<int> queue;
+ 
+    // Marca o atual no como visitado e insere na queue
+    int starting_vertex;
+    cout << "Digite o vertice de inicio: " << endl;
+    cin >> starting_vertex;
+    
+    visited[starting_vertex] = true;
+    queue.push_back(starting_vertex);
+ 
+    // percorre os vertices adjacentes
+    list<int>::iterator i;
+ 
+    while(!queue.empty())
+    {
+        // Desenfileira um vertice
+        starting_vertex = queue.front();
+        
+        cout << starting_vertex << " "; //imprime um vertice
+        output_file << starting_vertex << " "; //Faz a escrita no arquivo
+        
+        queue.pop_front();
+ 
+        // Pega todos os vertices adjacentes desinfileirados 
+        // Se nao foi visitado, marcamos como visitado e colocamos na fila
+        for (i = adj[starting_vertex].begin(); i != adj[starting_vertex].end(); ++i)
+        {
+            if (!visited[*i])
+            {
+                visited[*i] = true;
+                queue.push_back(*i);
+            }
+        }
+    }
 }
 
 float Graph::floydMarshall(int idSource, int idTarget)

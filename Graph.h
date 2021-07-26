@@ -22,11 +22,10 @@ class Graph{
         bool weighted_node;
         Node* first_node;
         Node* last_node;
-        int number_nodes;
 
     public:
         //Constructor
-        Graph(int order, bool directed, bool weighted_edge, bool weighted_node, int _number_nodes);
+        Graph(int order, bool directed, bool weighted_edge, bool weighted_node);
         //Destructor
         ~Graph();
         //Getters
@@ -60,6 +59,9 @@ class Graph{
         float greedRactiveRandom();
     private:
         //Auxiliar methods
+
+    public:
+        list<int> *adj;
 
 };
 
