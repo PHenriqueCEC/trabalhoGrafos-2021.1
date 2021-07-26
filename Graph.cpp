@@ -20,7 +20,7 @@ using namespace std;
 **************************************************************************************************/
 
 // Constructor
-Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node)
+Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node, int _number_nodes)
 {
 
     this->order = order;
@@ -29,6 +29,7 @@ Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node)
     this->weighted_node = weighted_node;
     this->first_node = this->last_node = nullptr;
     this->number_edges = 0;
+    number_nodes = _number_nodes;
 }
 
 // Destructor
@@ -98,73 +99,134 @@ Node *Graph::getLastNode()
 
 int Graph::getNumberNodes()
 {
-    int i = 0;
-   
+    int number_nodes = 0;
+
     for (Node *p = getFirstNode(); p != nullptr; p = p->getNextNode())
     {
-        i++;
+        number_nodes++;
     }
-    
-    return i;
+
+    return number_nodes;
 }
 
-Node *Graph::getNodeId(int id)
+void Graph::insertNode(int id)
+{
+    if (getNode(id) != nullptr)
+    {
+        return;
+    }
+
+    else
+    {
+        int number_nodes = getNumberNodes();
+        Node *p = new Node(id, number_nodes);
+
+        if (last_node == nullptr)
+        {
+            first_node = p;
+            last_node = p;
+        }
+
+        else
+        {
+            last_node->setNextNode(p);
+            last_node = p;
+        }
+    }
+}
+
+void Graph::insertEdge(int id, int target_id, float weight)
+{
+    if (!searchNode(id))
+        insertNode(id);
+
+    if (!searchNode(target_id))
+        insertNode(target_id);
+
+    Node *exit = getNode(id);
+    Node *entry = getNode(target_id);
+
+    exit->insertEdge(target_id, weight);
+    entry->insertEdge(id, weight);
+
+    exit->incrementInDegree();
+    entry->incrementInDegree();
+
+    number_edges++;
+}
+
+void Graph::removeNode(int id)
+{
+    Node *p = getNode(id);
+
+    if (p == nullptr)
+    {
+        return;
+    }
+
+    else
+    {
+        Node *q = first_node;
+
+        if (p == first_node)
+        {
+            first_node = p->getNextNode();
+            delete p;
+            return;
+        }
+
+        else
+        {
+            while (p != q->getNextNode())
+            {
+                q = q->getNextNode();
+            }
+
+            if (p->getNextNode() == nullptr)
+            {
+                last_node = q;
+            }
+            else
+            {
+                q->setNextNode(p->getNextNode());
+            }
+            delete p;
+        }
+    }
+}
+
+bool Graph::searchNode(int id)
 {
     Node *p = first_node;
     
     while(p != nullptr)
     {
         if (p->getId() == id)
-            return p;
+            return true;
         p = p->getNextNode();
     }
-    return nullptr;
-}
-
-void Graph::insertNode(int id)
-{
-    if(getNodeId(id) != nullptr)
-    {
-        return;
-    }
-
-    int numberNodes = getNumberNodes();
-    Node *p = new Node(id, numberNodes);
-
-    if (last_node == nullptr)
-    {
-        first_node = p;
-        last_node = p;
-    }
-
-    else
-    {
-        last_node->setNextNode(p);
-        last_node = p;
-    }
-}
-
-void Graph::insertEdge(int id, int target_id, float weight)
-{
-    
-}
-
-void Graph::removeNode(int id)
-{
-}
-
-bool Graph::searchNode(int id)
-{
+    return false;
 }
 
 Node *Graph::getNode(int id)
 {
+    Node *p = first_node;
+
+    while (p != nullptr)
+    {
+        if (p->getId() == id)
+            return p;
+        p = p->getNextNode();
+    }
+    return nullptr;
+
 }
 
 //Function that prints a set of edges belongs breadth tree
 
 void Graph::breadthFirstSearch(ofstream &output_file)
 {
+    
 }
 
 float Graph::floydMarshall(int idSource, int idTarget)
@@ -183,6 +245,7 @@ void topologicalSorting()
 void breadthFirstSearch(ofstream &output_file)
 {
 }
+
 Graph *getVertexInduced(int *listIdNodes)
 {
 }
@@ -190,6 +253,7 @@ Graph *getVertexInduced(int *listIdNodes)
 Graph *agmKuskal()
 {
 }
+
 Graph *agmPrim()
 {
 }

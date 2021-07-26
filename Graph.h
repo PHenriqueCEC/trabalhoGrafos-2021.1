@@ -22,22 +22,22 @@ class Graph{
         bool weighted_node;
         Node* first_node;
         Node* last_node;
+        int number_nodes;
 
     public:
         //Constructor
-        Graph(int order, bool directed, bool weighted_edge, bool weighted_node);
+        Graph(int order, bool directed, bool weighted_edge, bool weighted_node, int _number_nodes);
         //Destructor
         ~Graph();
         //Getters
         int getOrder();
         int getNumberEdges();
+        int getNumberNodes();
         bool getDirected();
         bool getWeightedEdge();
         bool getWeightedNode();
         Node* getFirstNode();
         Node* getLastNode();
-        Node* getNodeId(int id);
-        int getNumberNodes();
         //Other methods
         void insertNode(int id);
         void insertEdge(int id, int target_id, float weight);
