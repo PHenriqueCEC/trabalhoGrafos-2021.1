@@ -13,6 +13,8 @@
 #include <float.h>
 #include <iomanip>
 
+#define INFINITE 2147483647
+
 using namespace std;
 
 /**************************************************************************************************
@@ -227,25 +229,22 @@ Node *Graph::getNode(int id)
 void Graph::breadthFirstSearch(ofstream &output_file)
 {
     int number_nodes = getNumberNodes();
+    int starting_vertex;
+    
+    list<int>::iterator i; // percorre os vertices adjacentes
+    list<int> queue; // Cria uma queue
     
     // inicializa os vertices como nao visitados
     bool *visited = new bool[number_nodes];
     for(int i = 0; i < number_nodes; i++)
         visited[i] = false;
  
-    // Cria uma queue
-    list<int> queue;
- 
     // Marca o atual no como visitado e insere na queue
-    int starting_vertex;
     cout << "Digite o vertice de inicio: " << endl;
     cin >> starting_vertex;
     
     visited[starting_vertex] = true;
-    queue.push_back(starting_vertex);
- 
-    // percorre os vertices adjacentes
-    list<int>::iterator i;
+    queue.push_back(starting_vertex); 
  
     while(!queue.empty())
     {
@@ -272,6 +271,21 @@ void Graph::breadthFirstSearch(ofstream &output_file)
 
 float Graph::floydMarshall(int idSource, int idTarget)
 {
+    int number_vertex = getNumberNodes();
+    
+    //Matriz de distancia de tamanho igual ao num de vertices
+    int dist[number_vertex][number_vertex];
+
+    for(int i = 0; i < number_vertex; i++)
+    {
+        for(int j = 0; j < number_vertex; j++)
+        {
+            
+        }
+    }
+
+
+
 }
 
 float Graph::dijkstra(int idSource, int idTarget)

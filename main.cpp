@@ -138,7 +138,12 @@ void selecionar(int selecao, Graph* graph, ofstream& output_file){
         }
 
             //Caminho mínimo entre dois vértices usando Floyd;
-        case 3:{
+        case 3: {
+            int idSource, idTarget;
+            
+            cout << "Digite o vertice inicial e o vertice final para a busca do caminho minimo!" << endl;
+            cin >> idSource >> idTarget;
+            graph->floydMarshall(idSource, idTarget);
 
             break;
         }
