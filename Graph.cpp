@@ -13,7 +13,7 @@
 #include <float.h>
 #include <iomanip>
 
-#define INFINITE 2147483647
+#define INFINITE 2147483647 //valor maximo de uma variavel int
 
 using namespace std;
 
@@ -284,6 +284,47 @@ float Graph::floydMarshall(int idSource, int idTarget)
         }
     }
 
+
+
+}
+
+float **Graph::initializeMatrixFloydMarshall()
+{
+    float **dist_matrix = new float *[order]; //Cria uma matriz de distancia de tam = ordem
+    int *index_vector = new int(order); //Cria um vetor de indice de tam igual a ordem
+
+    for(int i = 0; i < order; i++)
+    {
+        dist_matrix[i] = new float[order];
+
+        for(int j = 0; j < order; j++)
+        {
+            if(i == j)
+                dist_matrix[i][j] = 0;
+            else
+                dist_matrix[i][j] = INFINITE;
+        }
+    }
+
+    Node *p = first_node;
+    int i = 0;
+    
+    for(; p != nullptr; p = p->getNextNode())
+    {
+        index_vector[i] = p->getId();
+        i++;
+    }
+
+    Edge *edge = nullptr; //Inicializa uma aresta auxiliar como nullptr
+    p = first_node;
+
+    for(; p != nullptr; p = p->getNextNode())
+    {
+        for(; edge != nullptr; edge = edge->getNextEdge())
+        {
+            Node *aux = edge->getTargetId();
+        }
+    }
 
 
 }
