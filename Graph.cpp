@@ -201,8 +201,8 @@ void Graph::removeNode(int id)
 bool Graph::searchNode(int id)
 {
     Node *p = first_node;
-    
-    while(p != nullptr)
+
+    while (p != nullptr)
     {
         if (p->getId() == id)
             return true;
@@ -222,41 +222,39 @@ Node *Graph::getNode(int id)
         p = p->getNextNode();
     }
     return nullptr;
-
 }
 
 //Function that prints a set of edges belongs breadth tree
 void Graph::breadthFirstSearch(ofstream &output_file)
 {
-    int number_nodes = getNumberNodes();
     int starting_vertex;
-    
-    list<int>::iterator i; // percorre os vertices adjacentes
-    list<int> queue; // Cria uma queue
-    
-    // inicializa os vertices como nao visitados
-    bool *visited = new bool[number_nodes];
-    for(int i = 0; i < number_nodes; i++)
-        visited[i] = false;
- 
-    // Marca o atual no como visitado e insere na queue
+    int number_nodes = getNumberNodes();
+
     cout << "Digite o vertice de inicio: " << endl;
     cin >> starting_vertex;
-    
+
+    list<int>::iterator i; // percorre os vertices adjacentes
+    list<int> queue;       // Cria uma queue
+
+    // inicializa os vertices como nao visitados
+    bool *visited = new bool[number_nodes];
+    for (int i = 0; i < number_nodes; i++)
+        visited[i] = false;
+
     visited[starting_vertex] = true;
-    queue.push_back(starting_vertex); 
- 
-    while(!queue.empty())
+    queue.push_back(starting_vertex);
+
+    while (!queue.empty())
     {
         // Desenfileira um vertice
         starting_vertex = queue.front();
-        
-        cout << starting_vertex << " "; //imprime um vertice
+
+        cout << starting_vertex << " ";        //imprime um vertice
         output_file << starting_vertex << " "; //Faz a escrita no arquivo
-        
+
         queue.pop_front();
- 
-        // Pega todos os vertices adjacentes desinfileirados 
+
+        // Pega todos os vertices adjacentes desinfileirados
         // Se nao foi visitado, marcamos como visitado e colocamos na fila
         for (i = adj[starting_vertex].begin(); i != adj[starting_vertex].end(); ++i)
         {
@@ -271,62 +269,85 @@ void Graph::breadthFirstSearch(ofstream &output_file)
 
 float Graph::floydMarshall(int idSource, int idTarget)
 {
-    int number_vertex = getNumberNodes();
-    
-    //Matriz de distancia de tamanho igual ao num de vertices
-    int dist[number_vertex][number_vertex];
+    Node *source_node = getNode(idSource); //pega o no com id de origem
+    Node *target_node = getNode(idTarget); //pega o no com id de destino
 
-    for(int i = 0; i < number_vertex; i++)
+    if (source_node == nullptr || target_node == nullptr)
     {
-        for(int j = 0; j < number_vertex; j++)
+        cout << "Indices inseridos incorretamente" << endl;
+        return -1;
+    }
+
+    int source_index = source_node->getIndex(); //armazena o indice de origem
+    int target_index = target_node->getIndex(); //armazena o indice de destino
+
+    float **dist = initializeMatrixFloydMarshall();
+
+    for (Node *p = getFirstNode(); p != nullptr; p = p->getNextNode())
+    {
+        for (Node *aux = getFirstNode(); aux != nullptr; aux = aux->getNextNode())
         {
-            
+            for (Node *aux2 = getFirstNode(); aux2 != nullptr; aux2 = aux2->getNextNode())
+            {
+                if ((dist[aux->getIndex()][aux2->getIndex()]) >
+                    ((dist[aux->getIndex()][p->getIndex()]) +
+                     (dist[p->getIndex()][aux2->getIndex()])))
+                {
+                    dist[aux->getIndex()][aux2->getIndex()] = dist[aux->getIndex()][p->getIndex()] +
+                                                              dist[p->getIndex()][aux2->getIndex()];
+                }
+            }
         }
     }
 
+    //Variavel que recebe o valor da distancia
+    float var_dist = dist[source_index][target_index];
 
+    for (int i = 0; i < order; i++) //Desaloca a matriz
+        delete[] dist[i];
+    delete[] dist;
 
+    return var_dist;
 }
 
 float **Graph::initializeMatrixFloydMarshall()
 {
-    float **dist_matrix = new float *[order]; //Cria uma matriz de distancia de tam = ordem
-    int *index_vector = new int(order); //Cria um vetor de indice de tam igual a ordem
+    float **dist = new float *[order];
 
-    for(int i = 0; i < order; i++)
+    for (int i = 0; i < order; i++)
     {
-        dist_matrix[i] = new float[order];
+        dist[i] = new float[order];
+    }
 
-        for(int j = 0; j < order; j++)
+    for (Node *p = getFirstNode(); p != nullptr; p = p->getNextNode())
+    {
+        int i = p->getIndex();
+
+        for (Node *aux = getFirstNode(); aux != nullptr; aux = aux->getNextNode())
         {
-            if(i == j)
-                dist_matrix[i][j] = 0;
+            int j = aux->getIndex();
+
+            if (i != j)
+            {
+                Edge *edge = p->hasEdgeBetween(aux->getId());
+
+                if (edge == nullptr)
+                {
+                    dist[i][j] = INFINITY;
+                }
+                else
+                {
+                    dist[i][j] = edge->getWeight();
+                }
+            }
             else
-                dist_matrix[i][j] = INFINITE;
+            {
+                dist[i][i] = 0;
+            }
         }
     }
 
-    Node *p = first_node;
-    int i = 0;
-    
-    for(; p != nullptr; p = p->getNextNode())
-    {
-        index_vector[i] = p->getId();
-        i++;
-    }
-
-    Edge *edge = nullptr; //Inicializa uma aresta auxiliar como nullptr
-    p = first_node;
-
-    for(; p != nullptr; p = p->getNextNode())
-    {
-        for(; edge != nullptr; edge = edge->getNextEdge())
-        {
-            Node *aux = edge->getTargetId();
-        }
-    }
-
-
+    return dist;
 }
 
 float Graph::dijkstra(int idSource, int idTarget)

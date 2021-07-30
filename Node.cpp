@@ -209,3 +209,8 @@ Edge* Node::hasEdgeBetween(int target_id)
     }
     return nullptr;
 }
+
+int Node::getIndex() 
+{
+  return this->index;
+}

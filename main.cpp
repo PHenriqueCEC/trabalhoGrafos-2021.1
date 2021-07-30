@@ -143,8 +143,9 @@ void selecionar(int selecao, Graph* graph, ofstream& output_file){
             
             cout << "Digite o vertice inicial e o vertice final para a busca do caminho minimo!" << endl;
             cin >> idSource >> idTarget;
-            graph->floydMarshall(idSource, idTarget);
-
+            
+            cout << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget 
+            << "eh: " << graph->floydMarshall(idSource, idTarget);
             break;
         }
 
