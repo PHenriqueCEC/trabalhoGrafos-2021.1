@@ -59,6 +59,7 @@ class Graph{
         float greedRactiveRandom();
     private:
         //Auxiliar methods
+        float **initializeMatrixFloydMarshall();
 
     public:
         list<int> *adj;
