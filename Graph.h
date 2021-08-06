@@ -49,7 +49,7 @@ class Graph{
         void breadthFirstSearch(ofstream& output_file);
         Graph* getVertexInduced(int* listIdNodes);
         Graph* agmKuskal();
-        Graph* agmPrim();
+        void agmPrim(int idSource);
         float floydMarshall(int idSource, int idTarget);
         float dijkstra(int idSource, int idTarget);
 

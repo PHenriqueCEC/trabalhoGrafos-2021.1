@@ -274,7 +274,7 @@ float Graph::floydMarshall(int idSource, int idTarget)
 
     if (source_node == nullptr || target_node == nullptr)
     {
-        cout << "Indices inseridos incorretamente" << endl;
+        cout << "Indices inseridos incorretamente!" << endl;
         return -1;
     }
 
@@ -371,6 +371,7 @@ Graph *agmKuskal()
 {
 }
 
-Graph *agmPrim()
+void Graph::agmPrim(int idSource)
 {
+    
 }
