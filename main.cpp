@@ -182,7 +182,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //Busca em largura;
     case 6:
     {
-
+            graph->breadthFirstSearch(output_file);
         break;
     }
         //Ordenação Topologica;
