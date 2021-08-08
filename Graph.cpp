@@ -12,6 +12,7 @@
 #include <ctime>
 #include <float.h>
 #include <iomanip>
+#include <algorithm>
 
 #define INFINITE 2147483647 //valor maximo de uma variavel int
 
@@ -224,6 +225,19 @@ Node *Graph::getNode(int id)
     return nullptr;
 }
 
+//Retorna o primeiro noh que não existe no grafo recebido
+Node *Graph::nodeNotExist(Node *p, Graph *graph) 
+{
+  for (Node *node = p; node != nullptr; node = node->getNextNode()) 
+  {
+    if (!graph->searchNode(node->getId())) 
+    {
+      return node;
+    }
+  }
+  return nullptr;
+}
+
 //Function that prints a set of edges belongs breadth tree
 void Graph::breadthFirstSearch(ofstream &output_file)
 {
@@ -373,5 +387,86 @@ Graph *agmKuskal()
 
 void Graph::agmPrim(int idSource)
 {
+    Node *p = getNode(idSource);
     
+    if (p == nullptr)
+    {
+        cout << "Noh inicial nao encontrado!";
+        return;
+    }
+
+    while (p->getDegree() == 0)
+    {
+        if (p->getId() != idSource)
+        {
+            p = p->getNextNode();
+        }
+        else
+        {
+            p = getFirstNode();
+        }
+    }
+
+    idSource = p->getId();
+
+    Node *root_node = getNode(idSource);
+    vector<Node *> list;
+    
+    Graph *prim_tree = new Graph(order, false, false, false);
+
+    list.push_back(root_node);
+
+    int insert_vector_size = order - 1;
+    int insert[insert_vector_size];
+    
+    float distance;
+
+    while (order > list.size())
+    {
+        distance = INFINITY;
+        for (int i = 0; i < list.size(); i++)
+        {
+            for (Edge *edge = list[i]->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge())
+            {
+                vector<Node *>::iterator it = find(list.begin(), list.end(), getNode(edge->getTargetId()));
+                if (edge->getWeight() < distance && it == list.end())
+                {
+                    distance = edge->getWeight();
+                    insert[0] = list[i]->getId();
+                    insert[1] = edge->getTargetId();
+                }
+            }
+        }
+        list.push_back(getNode(insert[1]));
+        prim_tree->insertEdge(insert[0], insert[1], distance);
+    }
+
+    p = getFirstNode();
+    Node *nodesLeft = nodeNotExist(p, prim_tree);
+    
+    while (nodesLeft != nullptr)
+    {
+        prim_tree->insertNode(nodesLeft->getId());
+        nodesLeft = nodeNotExist(nodesLeft, prim_tree);
+    }
+
+    prim_tree->printPrimTree();
+}
+
+void Graph::printPrimTree() {
+
+  cout << "Ordem da arvore: " << order << endl;
+  
+  for (Node *p = first_node; p != nullptr; p = p->getNextNode()) 
+  {
+    cout << "[" << p->getId() << "|" << p->getDegree() << "]";
+    Edge *edge = p->getFirstEdge();
+
+    while (edge != nullptr) 
+    {
+      cout << " ----> (" << edge->getTargetId() << "|" << edge->getWeight() << ")";
+      edge = edge->getNextEdge();
+    }
+    cout << endl;
+  }
 }

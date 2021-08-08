@@ -19,6 +19,7 @@ class Node{
         int index;
         unsigned int in_degree;
         unsigned int out_degree;
+        unsigned int degree;
         float weight;
         Node* next_node;
 
@@ -50,6 +51,7 @@ class Node{
         Edge* hasEdgeBetween(int target_id);
         // Auxiliar methods
         int getIndex();
+        int getDegree();
 
 };
 

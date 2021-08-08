@@ -15,6 +15,7 @@ Node::Node(int _id, int _index)
     index = _index;
     this->in_degree = 0;
     this->out_degree = 0;
+    this->degree = 0;
     this->weight = 0;
     this->first_edge = nullptr;
     this->last_edge = nullptr;
@@ -212,5 +213,10 @@ Edge* Node::hasEdgeBetween(int target_id)
 
 int Node::getIndex() 
 {
-  return this->index;
+  return index;
+}
+
+int Node::getDegree()
+{
+    return degree;
 }

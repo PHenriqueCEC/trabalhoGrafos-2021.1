@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Graph{
+class Graph {
 
     //Atributes
     private:
@@ -60,6 +60,8 @@ class Graph{
     private:
         //Auxiliar methods
         float **initializeMatrixFloydMarshall();
+        Node *nodeNotExist(Node *p, Graph *graph);
+        void printPrimTree();
 
     public:
         list<int> *adj;
