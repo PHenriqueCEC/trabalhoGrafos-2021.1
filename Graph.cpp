@@ -578,7 +578,7 @@ void Graph::agmPrim(int idSource)
 void Graph::printPrimTree()
 {
 
-    cout << "Ordem da arvore: " << order << endl;
+    cout << "Ordem da arvore de prim: " << order << endl;
 
     for (Node *p = first_node; p != nullptr; p = p->getNextNode())
     {
