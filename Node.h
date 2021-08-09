@@ -9,7 +9,7 @@
 using namespace std;
 
 // Definition of the Node class
-class Node{
+class Node {
 
     // Attributes
     private:
@@ -26,6 +26,7 @@ class Node{
     public:
         // Constructor
         Node(int _id, int _index);
+        Node(int _id);
         // Destructor
         ~Node();
         // Getters
@@ -52,6 +53,7 @@ class Node{
         // Auxiliar methods
         int getIndex();
         int getDegree();
+        void setId(int _id);
 
 };
 

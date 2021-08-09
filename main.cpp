@@ -9,6 +9,7 @@
 #include <chrono>
 #include "Graph.h"
 #include "Node.h"
+#include <vector>
 
 using namespace std;
 
@@ -117,9 +118,10 @@ int menu()
     cout << "[5] Árvore Geradora Mínima de Kruskal" << endl;
     cout << "[6] Imprimir caminhamento em largura" << endl;
     cout << "[7] Imprimir ordenacao topológica" << endl;
-    cout << "[8] Algoritmo Guloso" << endl;
-    cout << "[9] Algoritmo Guloso Randomizado " << endl;
-    cout << "[10] Algoritmo Guloso Randomizado Reativo" << endl;
+    cout << "[8] Busca em profundidade" << endl;
+    cout << "[9] Algoritmo Guloso" << endl;
+    cout << "[10] Algoritmo Guloso Randomizado " << endl;
+    cout << "[11] Algoritmo Guloso Randomizado Reativo" << endl;
     cout << "[0] Sair" << endl;
 
     cin >> selecao;
@@ -183,6 +185,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     case 6:
     {
             graph->breadthFirstSearch(output_file);
+
         break;
     }
         //Ordenação Topologica;
@@ -191,10 +194,28 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
 
         break;
     }
+
+    case 8: //Busca em profundidade
+    {
+        int idSource;
+        int count = 0;
+        
+        cout << "Digite o No de origem: " << endl;
+        cin >> idSource;
+
+        //Lista de vertice
+        vector<int>vertex_vector(graph->getOrder());
+        
+        vertex_vector = graph->depthFirstSearch(vertex_vector,idSource, graph->getOrder(), 
+                                                           &count);
+        break;
+    }
+   
     default:
     {
         cout << " Error!!! invalid option!!" << endl;
     }
+
     }
 }
 

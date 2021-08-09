@@ -226,16 +226,16 @@ Node *Graph::getNode(int id)
 }
 
 //Retorna o primeiro noh que não existe no grafo recebido
-Node *Graph::nodeNotExist(Node *p, Graph *graph) 
+Node *Graph::nodeNotExist(Node *p, Graph *graph)
 {
-  for (Node *node = p; node != nullptr; node = node->getNextNode()) 
-  {
-    if (!graph->searchNode(node->getId())) 
+    for (Node *node = p; node != nullptr; node = node->getNextNode())
     {
-      return node;
+        if (!graph->searchNode(node->getId()))
+        {
+            return node;
+        }
     }
-  }
-  return nullptr;
+    return nullptr;
 }
 
 //Function that prints a set of edges belongs breadth tree
@@ -373,8 +373,130 @@ void topologicalSorting()
 {
 }
 
-void breadthFirstSearch(ofstream &output_file)
+//Funcao recursiva onde, a partir de idSource, fazemos o caminhamento mais 
+//profundo possivel
+vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int graphOrder, 
+                             int *count)
 {
+    if (!searchNode(idSource))
+    {
+        cout << "idSource nao existe no grafo!" << endl;
+        return vertexVector;
+    }
+
+     vertexVector = initializeVertexVector(vertexVector);
+
+    for (list<Node>::iterator it = vertex->begin(); it != vertex->end(); ++it)
+    {
+        if (it->getId() == idSource)
+        {
+            cout << "Vertice atual " << it->getId() << endl;
+
+            Node *p;
+            vertexVector = auxDepth(vertexVector, it->getId(), count);
+
+            if (it->getNextNode() != 0) //existe o noh;
+            {
+                p = new Node(it->getNextNode()->getId());
+
+                if (it->getNextNode()->getNextNode() != 0)
+                {
+                    p->setNextNode(it->getNextNode()->getNextNode());
+                }
+            }
+
+            //verifica se o grafo ja foi visitado por completo
+            if(*count == graphOrder)
+            {
+                delete p;
+                return vertexVector;
+            }
+            int current_vertex = it->getId();
+
+            //caminha pelos vertices enquanto tiver um noh adjacente
+            while(true)
+            {
+                int j = 0;
+                
+                for (vector<int>::iterator it = vertexVector.begin(); it != vertexVector.end(); ++it)
+                {
+
+                    if (p->getId() == vertexVector[j])
+                    {
+                        if (p->getNextNode() == 0)
+                        {
+                            return vertexVector;
+                        }
+                        p->setId(p->getNextNode()->getId());
+
+                        if (p->getNextNode()->getNextNode() != 0)
+                        {
+                            p->setNextNode(p->getNextNode()->getNextNode());
+                        }
+                        else
+                        {
+                            p->setNextNode(nullptr);
+                        }
+                        break;
+                    }
+                    j++;
+
+                    //chamada recursiva
+                    if (j == vertexVector.size())
+                    {
+                        vertexVector = depthFirstSearch(vertexVector, graphOrder, p->getId(),
+                                                         count);
+                        cout << "Retornou para o vertice " << current_vertex << endl;
+                        if (*count == graphOrder)
+                        {
+                            delete p;
+                            return vertexVector;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return vertexVector;
+}
+
+//Inicialzia com -1 a lista de vertice
+vector<int> Graph::initializeVertexVector(vector<int> &vertexVector)
+{
+    int i = 0;
+    
+    for (vector<int>::iterator it = vertexVector.begin(); it != vertexVector.end(); ++it)
+    {
+        vertexVector[i] = -1;
+        i++;
+    }
+
+    return vertexVector;
+}
+
+//Verifica se o noh ja foi visitado
+vector<int> Graph::auxDepth(vector<int> vertexVector, int idNode, int *count)
+{
+    int i = 0;
+
+    for (vector<int>::iterator it = vertexVector.begin(); it != vertexVector.end(); ++it)
+    {
+        if (idNode == vertexVector[i])
+        {
+            if (*count == 0)
+            {
+                *count = *count + 1;
+            }
+            return vertexVector;
+        }
+        i++;
+    }
+    
+    vertexVector[*count] = idNode;
+    *count = *count + 1;
+    
+    return vertexVector;
 }
 
 Graph *getVertexInduced(int *listIdNodes)
@@ -388,7 +510,7 @@ Graph *agmKuskal()
 void Graph::agmPrim(int idSource)
 {
     Node *p = getNode(idSource);
-    
+
     if (p == nullptr)
     {
         cout << "Noh inicial nao encontrado!";
@@ -411,14 +533,14 @@ void Graph::agmPrim(int idSource)
 
     Node *root_node = getNode(idSource);
     vector<Node *> list;
-    
+
     Graph *prim_tree = new Graph(order, false, false, false);
 
     list.push_back(root_node);
 
     int insert_vector_size = order - 1;
     int insert[insert_vector_size];
-    
+
     float distance;
 
     while (order > list.size())
@@ -443,7 +565,7 @@ void Graph::agmPrim(int idSource)
 
     p = getFirstNode();
     Node *nodesLeft = nodeNotExist(p, prim_tree);
-    
+
     while (nodesLeft != nullptr)
     {
         prim_tree->insertNode(nodesLeft->getId());
@@ -453,20 +575,21 @@ void Graph::agmPrim(int idSource)
     prim_tree->printPrimTree();
 }
 
-void Graph::printPrimTree() {
+void Graph::printPrimTree()
+{
 
-  cout << "Ordem da arvore: " << order << endl;
-  
-  for (Node *p = first_node; p != nullptr; p = p->getNextNode()) 
-  {
-    cout << "[" << p->getId() << "|" << p->getDegree() << "]";
-    Edge *edge = p->getFirstEdge();
+    cout << "Ordem da arvore: " << order << endl;
 
-    while (edge != nullptr) 
+    for (Node *p = first_node; p != nullptr; p = p->getNextNode())
     {
-      cout << " ----> (" << edge->getTargetId() << "|" << edge->getWeight() << ")";
-      edge = edge->getNextEdge();
+        cout << "[" << p->getId() << "|" << p->getDegree() << "]";
+        Edge *edge = p->getFirstEdge();
+
+        while (edge != nullptr)
+        {
+            cout << " ----> (" << edge->getTargetId() << "|" << edge->getWeight() << ")";
+            edge = edge->getNextEdge();
+        }
+        cout << endl;
     }
-    cout << endl;
-  }
 }

@@ -22,6 +22,19 @@ Node::Node(int _id, int _index)
     this->next_node = nullptr;
 };
 
+Node::Node(int _id)
+{
+    id = _id;
+    this->in_degree = 0;
+    this->out_degree = 0;
+    this->degree = 0;
+    this->weight = 0;
+    this->first_edge = nullptr;
+    this->last_edge = nullptr;
+    this->next_node = nullptr;
+
+};
+
 // Destructor
 Node::~Node(){
 
@@ -219,4 +232,9 @@ int Node::getIndex()
 int Node::getDegree()
 {
     return degree;
+}
+
+void Node::setId(int _id)
+{
+    id = _id;
 }
