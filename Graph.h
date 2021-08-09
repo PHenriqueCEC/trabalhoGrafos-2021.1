@@ -66,6 +66,7 @@ public:
 private:
     //Auxiliar methods
     float **initializeMatrixFloydMarshall();
+      Node *getNearestNode(set<Node *> const &nodeList, float *distances);
     Node *nodeNotExist(Node *p, Graph *graph);
     void printPrimTree();
     vector<int> initializeVertexVector(vector<int> &vertexVector);
