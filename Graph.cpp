@@ -430,13 +430,13 @@ set<Node *> Graph::getMinimumPath(Node *idTarget, map<Node *, Node *> *nodeMap) 
 void Graph::updateDistances(Node *initialNode, float *distances, set<Node *> *nodeList, map<Node *, Node *> *nodeMap) {
   for (Edge *edge = initialNode->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge()) {
 
-    int indexTargetNode = getNodeById(edge->getTargetId())->getIndex();
+    int indexTargetNode = getNode(edge->getTargetId())->getIndex();
     int indexInitialNode = initialNode->getIndex();
 
     if (distances[indexTargetNode] >= distances[indexInitialNode] + edge->getWeight()) {
       distances[indexTargetNode] = distances[indexInitialNode] + edge->getWeight();
 
-      Node *targetNode = this->getNodeById(edge->getTargetId());
+      Node *targetNode = this->getNode(edge->getTargetId());
       map<Node *, Node *>::iterator it = nodeMap->find(targetNode);
 
       if (it == nodeMap->end()) {
@@ -472,8 +472,7 @@ void topologicalSorting()
 
 //Funcao recursiva onde, a partir de idSource, fazemos o caminhamento mais 
 //profundo possivel
-vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int graphOrder, 
-                             int *count)
+vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int graphOrder,  int *count)
 {
     if (!searchNode(idSource))
     {
@@ -541,8 +540,7 @@ vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int 
                     //chamada recursiva
                     if (j == vertexVector.size())
                     {
-                        vertexVector = depthFirstSearch(vertexVector, graphOrder, p->getId(),
-                                                         count);
+                        vertexVector = depthFirstSearch(vertexVector, graphOrder, p->getId(), count);
                         cout << "Retornou para o vertice " << current_vertex << endl;
                         if (*count == graphOrder)
                         {
