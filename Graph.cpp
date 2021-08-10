@@ -14,6 +14,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <map>
+#include <deque>
 
 #define INFINITE 2147483647 //valor maximo de uma variavel int
 
@@ -240,46 +241,71 @@ Node *Graph::nodeNotExist(Node *p, Graph *graph)
 }
 
 //Function that prints a set of edges belongs breadth tree
-void Graph::breadthFirstSearch(ofstream &output_file)
+void Graph::breadthFirstSearch(int idSource, int idTarget, ofstream &output_file)
 {
-    int starting_vertex;
-    int number_nodes = getNumberNodes();
+    Node *initial_node = getNode(idSource);
+    Node *target_node = getNode(idTarget);
 
-    cout << "Digite o vertice de inicio: " << endl;
-    cin >> starting_vertex;
-
-    list<int>::iterator i; // percorre os vertices adjacentes
-    list<int> queue;       // Cria uma queue
-
-    // inicializa os vertices como nao visitados
-    bool *visited = new bool[number_nodes];
-    for (int i = 0; i < number_nodes; i++)
-        visited[i] = false;
-
-    visited[starting_vertex] = true;
-    queue.push_back(starting_vertex);
-
-    while (!queue.empty())
+    if (initial_node == nullptr || target_node == nullptr)
     {
-        // Desenfileira um vertice
-        starting_vertex = queue.front();
+        cout << "Noh inicial ou noh final nao existe no grafo!" << endl;
+        return;
+    }
 
-        cout << starting_vertex << " ";        //imprime um vertice
-        output_file << starting_vertex << " "; //Faz a escrita no arquivo
+    int path_traveled[order] = {-1};
+    path_traveled[0] = idSource;
+    
+    int path_index = 0;
+    deque<Node *> node_deque;
+    
+    node_deque.push_back(initial_node);
 
-        queue.pop_front();
-
-        // Pega todos os vertices adjacentes desinfileirados
-        // Se nao foi visitado, marcamos como visitado e colocamos na fila
-        for (i = adj[starting_vertex].begin(); i != adj[starting_vertex].end(); ++i)
+    while (!node_deque.empty())
+    {
+        for (Edge *edge = node_deque.front()->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge())
         {
-            if (!visited[*i])
+            if (!valueInArray(edge->getTargetId(), path_traveled, order))
             {
-                visited[*i] = true;
-                queue.push_back(*i);
+                if (!idExistsQueue(edge->getTargetId(), node_deque))
+                {
+                    node_deque.push_back(getNode(edge->getTargetId()));
+                }
             }
         }
+
+        cout << node_deque.front()->getId() << "  " << endl;
+        output_file << node_deque.front()->getId() << "  " << endl;
+
+        path_traveled[path_index++] = node_deque.front()->getId();
+
+        if (node_deque.front()->getId() == idTarget)
+            return;
+
+        node_deque.pop_front();
     }
+
+    return;
+}
+
+// Verifica se o id existe em uma fila de nodes
+bool Graph::idExistsQueue(int id, deque<Node *> const &deque) 
+{
+  for (int i = 0; i < deque.size(); i++) 
+  {
+    if (deque.at(i)->getId() == id)
+      return true;
+  }
+  return false;
+}
+
+bool Graph::valueInArray(int value, int *array, int size)
+{
+    for (int i = 0; i < size; i++) 
+    {
+        if (array[i] == value)
+            return true;
+  }
+  return false;
 }
 
 float Graph::floydMarshall(int idSource, int idTarget)
@@ -365,115 +391,137 @@ float **Graph::initializeMatrixFloydMarshall()
     return dist;
 }
 
-float *Graph::dijkstra(int idSource, int idTarget) {
-  Node *rootNode = this->getNode(idSource);
-  Node *targetNode = this->getNode(idTarget);
+float *Graph::dijkstra(int idSource, int idTarget)
+{
+    Node *rootNode = this->getNode(idSource);
+    Node *targetNode = this->getNode(idTarget);
 
-  if (rootNode == nullptr) {
-    cout << "\n[Dijkstra]: Node inicial nao encontrado";
-    return nullptr;
-  }
-  if (targetNode == nullptr) {
-    cout << "\n[Dijkstra]: Node target nao encontrado";
-    return nullptr;
-  }
-
-  set<Node *> nodeList;
-  nodeList.insert(rootNode);
-  map<Node *, Node *> nodeMap;
-  float distances[this->order];
-
-  for (Node *p = this->getFirstNode(); p != NULL; p = p->getNextNode()) {
-    Edge *edge = rootNode->hasEdgeBetween(p->getId());
-
-    if (edge != nullptr) {
-      distances[p->getIndex()] = edge->getWeight();
-    } else {
-      distances[p->getIndex()] = INFINITY;
+    if (rootNode == nullptr)
+    {
+        cout << "\n[Dijkstra]: Node inicial nao encontrado";
+        return nullptr;
     }
-  }
+    if (targetNode == nullptr)
+    {
+        cout << "\n[Dijkstra]: Node target nao encontrado";
+        return nullptr;
+    }
 
-  int rootIndex = rootNode->getIndex();
-  distances[rootIndex] = 0;
+    set<Node *> nodeList;
+    nodeList.insert(rootNode);
+    map<Node *, Node *> nodeMap;
+    float distances[this->order];
 
-  while (nodeList.size() > 0) {
-    Node *nearestNode = this->getNearestNode(nodeList, distances);
-    nodeList.erase(nearestNode);
-    this->updateDistances(nearestNode, distances, &nodeList, &nodeMap);
-  }
+    for (Node *p = this->getFirstNode(); p != NULL; p = p->getNextNode())
+    {
+        Edge *edge = rootNode->hasEdgeBetween(p->getId());
 
-  set<Node *> minimumPath = this->getMinimumPath(targetNode, &nodeMap);
+        if (edge != nullptr)
+        {
+            distances[p->getIndex()] = edge->getWeight();
+        }
+        else
+        {
+            distances[p->getIndex()] = INFINITY;
+        }
+    }
 
-  for (set<Node *>::iterator it = minimumPath.begin(); it != minimumPath.end(); it++) {
-    cout << (*it)->getId() << "  ";
-  }
+    int rootIndex = rootNode->getIndex();
+    distances[rootIndex] = 0;
+
+    while (nodeList.size() > 0)
+    {
+        Node *nearestNode = this->getNearestNode(nodeList, distances);
+        nodeList.erase(nearestNode);
+        this->updateDistances(nearestNode, distances, &nodeList, &nodeMap);
+    }
+
+    set<Node *> minimumPath = this->getMinimumPath(targetNode, &nodeMap);
+
+    for (set<Node *>::iterator it = minimumPath.begin(); it != minimumPath.end(); it++)
+    {
+        cout << (*it)->getId() << "  ";
+    }
 }
 // Auxiliar Dijsktra para achar o caminho minimo
-set<Node *> Graph::getMinimumPath(Node *idTarget, map<Node *, Node *> *nodeMap) {
-  set<Node *> path;
-  Node *step = idTarget;
+set<Node *> Graph::getMinimumPath(Node *idTarget, map<Node *, Node *> *nodeMap)
+{
+    set<Node *> path;
+    Node *step = idTarget;
 
-  map<Node *, Node *>::iterator auxIt = nodeMap->find(step);
-  if (auxIt == nodeMap->end()) {
-    return path;
-  }
+    map<Node *, Node *>::iterator auxIt = nodeMap->find(step);
+    if (auxIt == nodeMap->end())
+    {
+        return path;
+    }
 
-  path.insert(step);
-  map<Node *, Node *>::iterator it = nodeMap->find(step);
-  while (it != nodeMap->end()) {
-    step = (*it).second;
     path.insert(step);
-    it = nodeMap->find(step);
-  }
-  return path;
+    map<Node *, Node *>::iterator it = nodeMap->find(step);
+    while (it != nodeMap->end())
+    {
+        step = (*it).second;
+        path.insert(step);
+        it = nodeMap->find(step);
+    }
+    return path;
 }
 // Auxiliar Dijsktra para atualizar as estruturas que determinam as distancia para o initialNode
-void Graph::updateDistances(Node *initialNode, float *distances, set<Node *> *nodeList, map<Node *, Node *> *nodeMap) {
-  for (Edge *edge = initialNode->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge()) {
+void Graph::updateDistances(Node *initialNode, float *distances, set<Node *> *nodeList, map<Node *, Node *> *nodeMap)
+{
+    for (Edge *edge = initialNode->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge())
+    {
 
-    int indexTargetNode = getNode(edge->getTargetId())->getIndex();
-    int indexInitialNode = initialNode->getIndex();
+        int indexTargetNode = getNode(edge->getTargetId())->getIndex();
+        int indexInitialNode = initialNode->getIndex();
 
-    if (distances[indexTargetNode] >= distances[indexInitialNode] + edge->getWeight()) {
-      distances[indexTargetNode] = distances[indexInitialNode] + edge->getWeight();
+        if (distances[indexTargetNode] >= distances[indexInitialNode] + edge->getWeight())
+        {
+            distances[indexTargetNode] = distances[indexInitialNode] + edge->getWeight();
 
-      Node *targetNode = this->getNode(edge->getTargetId());
-      map<Node *, Node *>::iterator it = nodeMap->find(targetNode);
+            Node *targetNode = this->getNode(edge->getTargetId());
+            map<Node *, Node *>::iterator it = nodeMap->find(targetNode);
 
-      if (it == nodeMap->end()) {
-        nodeMap->insert(make_pair(targetNode, initialNode));
-      } else {
-        (*it).second = initialNode;
-      }
-      nodeList->insert(targetNode);
+            if (it == nodeMap->end())
+            {
+                nodeMap->insert(make_pair(targetNode, initialNode));
+            }
+            else
+            {
+                (*it).second = initialNode;
+            }
+            nodeList->insert(targetNode);
+        }
     }
-  }
 }
 // Auxiliar Dijsktra para achar o node mais proximo
-Node *Graph::getNearestNode(set<Node *> const &nodeList, float *distances) {
-  Node *auxNode = nullptr;
+Node *Graph::getNearestNode(set<Node *> const &nodeList, float *distances)
+{
+    Node *auxNode = nullptr;
 
-  for (set<Node *>::iterator it = nodeList.begin(); it != nodeList.end(); ++it) {
-    if (auxNode == nullptr) {
-      auxNode = *it;
-    } else {
-      if (distances[(*it)->getIndex()] < distances[auxNode->getIndex()])
-        auxNode = *it;
+    for (set<Node *>::iterator it = nodeList.begin(); it != nodeList.end(); ++it)
+    {
+        if (auxNode == nullptr)
+        {
+            auxNode = *it;
+        }
+        else
+        {
+            if (distances[(*it)->getIndex()] < distances[auxNode->getIndex()])
+                auxNode = *it;
+        }
     }
-  }
 
-  return auxNode;
+    return auxNode;
 }
-
 
 //function that prints a topological sorting
 void topologicalSorting()
 {
 }
 
-//Funcao recursiva onde, a partir de idSource, fazemos o caminhamento mais 
+//Funcao recursiva onde, a partir de idSource, fazemos o caminhamento mais
 //profundo possivel
-vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int graphOrder,  int *count)
+vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int graphOrder, int *count)
 {
     if (!searchNode(idSource))
     {
@@ -481,7 +529,7 @@ vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int 
         return vertexVector;
     }
 
-     vertexVector = initializeVertexVector(vertexVector);
+    vertexVector = initializeVertexVector(vertexVector);
 
     for (list<Node>::iterator it = vertex->begin(); it != vertex->end(); ++it)
     {
@@ -503,7 +551,7 @@ vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int 
             }
 
             //verifica se o grafo ja foi visitado por completo
-            if(*count == graphOrder)
+            if (*count == graphOrder)
             {
                 delete p;
                 return vertexVector;
@@ -511,10 +559,10 @@ vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int 
             int current_vertex = it->getId();
 
             //caminha pelos vertices enquanto tiver um noh adjacente
-            while(true)
+            while (true)
             {
                 int j = 0;
-                
+
                 for (vector<int>::iterator it = vertexVector.begin(); it != vertexVector.end(); ++it)
                 {
 
@@ -561,7 +609,7 @@ vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int 
 vector<int> Graph::initializeVertexVector(vector<int> &vertexVector)
 {
     int i = 0;
-    
+
     for (vector<int>::iterator it = vertexVector.begin(); it != vertexVector.end(); ++it)
     {
         vertexVector[i] = -1;
@@ -588,10 +636,10 @@ vector<int> Graph::auxDepth(vector<int> vertexVector, int idNode, int *count)
         }
         i++;
     }
-    
+
     vertexVector[*count] = idNode;
     *count = *count + 1;
-    
+
     return vertexVector;
 }
 
@@ -630,7 +678,7 @@ void Graph::agmPrim(int idSource)
     Node *root_node = getNode(idSource);
     vector<Node *> list;
 
-    Graph *prim_tree = new Graph(order, false, false, false);
+    Graph *prim_tree = new Graph(order, directed, weighted_edge, weighted_node);
 
     list.push_back(root_node);
 

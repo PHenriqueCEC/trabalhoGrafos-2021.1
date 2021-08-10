@@ -5,6 +5,7 @@
 #ifndef NODE_H_INCLUDED
 #define NODE_H_INCLUDED
 #include "Edge.h" // Include of the Edge class
+#include <deque>
 
 using namespace std;
 

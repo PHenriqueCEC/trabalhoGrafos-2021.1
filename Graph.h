@@ -11,6 +11,8 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <deque>
+#include <iostream>
 
 using namespace std;
 
@@ -50,7 +52,7 @@ public:
 
     //methods phase1
     void topologicalSorting();
-    void breadthFirstSearch(ofstream &output_file);
+    void breadthFirstSearch(int idSource, int idTarget, ofstream &output_file);
     Graph *getVertexInduced(int *listIdNodes);
     Graph *agmKuskal();
     void agmPrim(int idSource);
@@ -74,6 +76,8 @@ private:
     Node *nodeNotExist(Node *p, Graph *graph);
     void printPrimTree();
     vector<int> initializeVertexVector(vector<int> &vertexVector);
+    bool valueInArray(int value, int *array, int size);
+    bool idExistsQueue(int id, deque<Node *> const &deque);
 
 public:
     list<int> *adj;

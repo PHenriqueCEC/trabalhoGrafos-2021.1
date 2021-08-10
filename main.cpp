@@ -199,8 +199,12 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     case 6:
     {
         cout << "Busca em largura" << endl;
+        int idSource, idTarget;
 
-        graph->breadthFirstSearch(output_file);
+        cout << "Digite o vertice inicial e o vertice final para a busca em largura!" << endl;
+        cin >> idSource >> idTarget;
+
+        graph->breadthFirstSearch(idSource, idTarget, output_file);
 
         break;
     }
