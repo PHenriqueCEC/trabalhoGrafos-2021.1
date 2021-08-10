@@ -138,6 +138,9 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     //Subgrafo induzido por um conjunto de vértices X;
     case 1:
     {
+        cout << "Subgrafo induzido por um conjunto de vertices X" << endl;
+
+        graph->getVertexInduced(output_file);
 
         break;
     }
@@ -151,6 +154,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //Caminho mínimo entre dois vértices usando Floyd;
     case 3:
     {
+        cout << "Caminho minimo entre dois vertices usando Floyd" << endl;
         int idSource, idTarget;
 
         cout << "Digite o vertice inicial e o vertice final para a busca do caminho minimo!" << endl;
@@ -171,6 +175,8 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //AGM Prim;
     case 5:
     {
+        cout << "Arvore Geradora Minima de Kruskal" << endl;
+        
         int idSource;
        
         cout << "Digite o vertice inicial: ";
@@ -184,6 +190,8 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //Busca em largura;
     case 6:
     {
+            cout << "Busca em largura" << endl;
+
             graph->breadthFirstSearch(output_file);
 
         break;
@@ -197,6 +205,8 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
 
     case 8: //Busca em profundidade
     {
+        cout << "Busca em profundidade" << endl;
+
         int idSource;
         int count = 0;
         

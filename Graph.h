@@ -49,7 +49,7 @@ public:
     //methods phase1
     void topologicalSorting();
     void breadthFirstSearch(ofstream &output_file);
-    Graph *getVertexInduced(int *listIdNodes);
+    Graph *getVertexInduced(ofstream &output_file);
     Graph *agmKuskal();
     void agmPrim(int idSource);
     float floydMarshall(int idSource, int idTarget);
@@ -69,6 +69,7 @@ private:
     Node *nodeNotExist(Node *p, Graph *graph);
     void printPrimTree();
     vector<int> initializeVertexVector(vector<int> &vertexVector);
+    bool edgeBetweenIdAndTarget(int id, int targetId);
 
 public:
     list<int> *adj;

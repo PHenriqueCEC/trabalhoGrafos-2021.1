@@ -499,8 +499,108 @@ vector<int> Graph::auxDepth(vector<int> vertexVector, int idNode, int *count)
     return vertexVector;
 }
 
-Graph *getVertexInduced(int *listIdNodes)
+Graph *Graph::getVertexInduced(ofstream &output_file)
 {
+    int size;
+    cout << "Size of nodes list: ";
+    cin >> size;
+    int *vet = (int *)malloc(sizeof(int) * size);
+    for (int i = 0; i < size; i++) {
+        cout << "Node " << i + 1 << ": ";
+        cin >> vet[i];
+    }
+
+    int *check = (int *)malloc(sizeof(int *) * m_order);
+    int *nodes = (int *)malloc(sizeof(int *) * m_order);
+
+    Graph *subgraph = new Graph(m_isDirected, m_isWeightedEdges, m_isWeightedNodes);
+    
+    Node *node = first_node;
+
+    string graphType;
+    string nodesSeparator;
+    if (m_isDirected) {
+        graphType = "digraph";
+        nodesSeparator = "->";
+    } else {
+        graphType = "graph";
+        nodesSeparator = "--";
+    }
+
+    output_file << graphType << " SubgrafoInduzido {\n";
+    cout << graphType << " SubgrafoInduzido {\n";
+
+    for (int i = 0; i < m_order; i++) {
+        check[i] = 0;
+        nodes[i] = node->getId();
+        node = node->getNextNode();
+    }
+
+    for (int i = 0; i < size; i++) {
+        if (!searchNode(vet[i])) {
+            cout << "Elemento " << vet[i] << " nao pertence ao grafo. Não eh possivel gerar o subgrafo induzido.\n";
+
+            delete check;
+            delete nodes;
+            return nullptr;
+        }
+
+        if (subgraph->searchNode(vet[i]) == false) {
+            subgraph->insertNode(vet[i], 0, -1);
+        }
+
+        int ind = getIndexFromArray<int>(nodes, m_order, vet[i]);
+        if (check[ind] == 0) {
+            check[ind] = 1;
+        } else {
+            std::cout << "Elementos repetidos no vetor.\n";
+            delete check;
+            delete nodes;
+            return nullptr;
+        }
+
+        Node *v = getNode(vet[i]);
+        Edge *edge;
+        
+        for (int j = 0; j < size; j++) 
+        {
+            if (vet[i] != vet[j]) 
+            {
+                bool aux = edgeBetweenIdAndTarget(v->getId(), vet[j]);
+                if (aux == true) 
+                {
+                    if (subgraph->edgeBetweenIdAndTarget(vet[i], vet[j]) == false) 
+                    {
+                        edge = v->getFirstEdge();
+                        while (edge != nullptr) 
+                        {
+                            if (edge->getTargetId() == vet[j]) 
+                            {
+                                subgraph->insertEdge(vet[i], vet[j], edge->getWeight());
+
+                                output_file << "\t" << vet[i] << " " << nodesSeparator << " " << vet[j] << "\n";
+                                cout << "\t" << vet[i] << " " << nodesSeparator << " " << vet[j] << "\n";
+                            }
+                            edge = edge->getNextEdge();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    output_file << "}\n";
+    cout << "}\n";
+
+    delete check;
+    delete nodes;
+
+    return subgraph;
+}
+
+bool Graph::edgeBetweenIdAndTarget(int id, int targetId)
+{
+
 }
 
 Graph *agmKuskal()
