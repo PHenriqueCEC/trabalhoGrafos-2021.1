@@ -138,6 +138,9 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     //Subgrafo induzido por um conjunto de vértices X;
     case 1:
     {
+        cout << "Subgrafo induzido por um conjunto de vértices X " << endl;
+
+        cout << "AINDA NAO IMPLEMENTADO!" << endl; 
 
         break;
     }
@@ -146,13 +149,12 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     {
         cout << "Caminho mínimo entre dois vértices usando Dijkstra" << endl;
         int idSource, idTarget;
-        
+
         cout << "Digite o vertice inicial e o vertice final para a busca do caminho minimo!" << endl;
         cin >> idSource >> idTarget;
 
         cout << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
              << "eh: " << graph->dijkstra(idSource, idTarget);
-
 
         break;
     }
@@ -171,19 +173,14 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         break;
     }
 
-        //AGM - Kruscal;
+        //AGM - Prim;
     case 4:
     {
+        cout << "Árvore Geradora Mínima de Prim" << endl;
 
-        break;
-    }
-
-        //AGM Prim;
-    case 5:
-    {
         int idSource;
-       
-        cout << "Digite o vertice inicial: ";
+
+        cout << "Digite o vertice inicial: " << endl;
         cin >> idSource;
 
         graph->agmPrim(idSource);
@@ -191,41 +188,55 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         break;
     }
 
+        //AGM Kruskal;
+    case 5:
+    {
+
+        break;
+    }
+
         //Busca em largura;
     case 6:
     {
-            graph->breadthFirstSearch(output_file);
+        cout << "Busca em largura" << endl;
+
+        graph->breadthFirstSearch(output_file);
 
         break;
     }
         //Ordenação Topologica;
     case 7:
     {
+        cout << "Ordenação Topologica" << endl;
+
+        cout << "AINDA NAO IMPLEMENTADO!" << endl; 
 
         break;
     }
 
     case 8: //Busca em profundidade
     {
+
+        cout << "Busca em profundidade" << endl;
+
         int idSource;
         int count = 0;
-        
+
         cout << "Digite o No de origem: " << endl;
         cin >> idSource;
 
         //Lista de vertice
-        vector<int>vertex_vector(graph->getOrder());
-        
-        vertex_vector = graph->depthFirstSearch(vertex_vector,idSource, graph->getOrder(), 
-                                                           &count);
+        vector<int> vertex_vector(graph->getOrder());
+
+        vertex_vector = graph->depthFirstSearch(vertex_vector, idSource, graph->getOrder(),
+                                                &count);
         break;
     }
-   
+
     default:
     {
         cout << " Error!!! invalid option!!" << endl;
     }
-
     }
 }
 
