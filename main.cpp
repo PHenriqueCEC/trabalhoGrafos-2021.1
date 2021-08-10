@@ -191,6 +191,9 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //AGM Kruskal;
     case 5:
     {
+        cout << "Árvore Geradora de Kruskal" << endl;
+        
+        graph->agmKruskal();
 
         break;
     }

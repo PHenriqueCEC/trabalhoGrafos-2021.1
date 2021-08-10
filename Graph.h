@@ -54,7 +54,7 @@ public:
     void topologicalSorting();
     void breadthFirstSearch(int idSource, int idTarget, ofstream &output_file);
     Graph *getVertexInduced(int *listIdNodes);
-    Graph *agmKuskal();
+    Graph *agmKruskal();
     void agmPrim(int idSource);
     float floydMarshall(int idSource, int idTarget);
     float *dijkstra(int idSource, int idTarget);
@@ -74,7 +74,10 @@ private:
     set<Node *> getMinimumPath(Node *targetNode, map<Node *, Node *> *nodeMap);
     void updateDistances(Node *initialNode, float *distances, set<Node *> *nodeList, map<Node *, Node *> *nodeMap);
     Node *nodeNotExist(Node *p, Graph *graph);
+    void auxKruskal(list<Edge *> &edgesList, vector<Node *> &vetNodes);
     void printPrimTree();
+    void printKruskalTree();
+    int getTargetNodeId(int initialId, Edge *edge);
     vector<int> initializeVertexVector(vector<int> &vertexVector);
     bool valueInArray(int value, int *array, int size);
     bool idExistsQueue(int id, deque<Node *> const &deque);

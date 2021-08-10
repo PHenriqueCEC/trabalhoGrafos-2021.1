@@ -403,7 +403,7 @@ float *Graph::dijkstra(int idSource, int idTarget)
     }
     if (targetNode == nullptr)
     {
-        cout << "\n[Dijkstra]: Node target nao encontrado";
+        cout << "\n[Dijkstra]: Node alvo nao encontrado";
         return nullptr;
     }
 
@@ -647,8 +647,96 @@ Graph *getVertexInduced(int *listIdNodes)
 {
 }
 
-Graph *agmKuskal()
-{
+void Graph::agmKruskal() {
+  vector<Node *> vetNodes;
+  float distance;
+  int insert[2];
+  Graph *tree = new Graph(this->order, false);
+  Node *aux = this->first_node;
+  while (vetNodes.size() < this->order) {
+    list<Edge *> listOrder;
+    auxKruskal(listOrder, vetNodes);
+    if (listOrder.front() == nullptr) {
+      break;
+    } else {
+      insert[0] = listOrder.front()->getTargetId();
+      insert[1] = this->getTargetNodeId(insert[0], listOrder.front());
+      vector<Node *>::iterator it = find(vetNodes.begin(), vetNodes.end(), this->getNode(insert[1]));
+      if (it == vetNodes.end()) {
+        vetNodes.push_back(this->getNode(insert[1]));
+      }
+      it = find(vetNodes.begin(), vetNodes.end(), this->getNode(insert[0]));
+      if (it == vetNodes.end()) {
+        vetNodes.push_back(this->getNode(insert[0]));
+      }
+      Edge *edgeDist = this->getNode(insert[0])->hasEdgeBetween(insert[1]);
+      distance = edgeDist->getWeight();
+      tree->insertEdge(insert[0], insert[1], distance);
+    }
+  }
+  Node *nodesLeft = nodeNotExist(tree, aux);
+  while (nodesLeft != nullptr) {
+    tree->insertNode(nodesLeft->getId());
+    nodesLeft = nodeNotExist(tree, nodesLeft);
+  }
+  tree->printKruskalTree();
+}
+
+void Graph::printKruskalTree() {
+  if (this->order == 0) {
+    cout << "\n[print]: Grafo Vazio!";
+    return;
+  }
+
+  cout << "\nOrdem: " << order << endl;
+  for (Node *p = first_node; p != nullptr; p = p->getNextNode()) {
+    cout << "[" << p->getId() << "|" << p->getDegree() << "]";
+    Edge *edgeAux = p->getFirstEdge();
+
+    while (edgeAux != nullptr) {
+      cout << " => (" << edgeAux->getTargetId() << "|" << edgeAux->getWeight() << ")";
+      edgeAux = edgeAux->getNextEdge();
+    }
+    cout << endl;
+  }
+}
+
+// Retorna o id da outra extremidade da aresta, se não houver retornar -1
+int Graph::getTargetNodeId(int initialId, Edge *edge) {
+  Node *noAlvo;
+  for (Edge *aux = this->getNodeById(initialId)->getFirstEdge(); aux != nullptr; aux = aux->getNextEdge()) {
+    for (Edge *aux2 = this->getNodeById(aux2->getTargetId())->getFirstEdge(); aux2 != nullptr; aux2 = aux2->getNextEdge()) {
+      if (aux2 == edge)
+        return aux->getTargetId();
+    }
+  }
+  return -1;
+}
+
+//Retorna o primeiro node que não existe no grafo recebido como parametro em relação ao grafo this
+Node *Graph::nodeNotExist(Graph *graph, Node *p) {
+  for (Node *nodeAux = p; nodeAux != nullptr; nodeAux = nodeAux->getNextNode()) {
+    if (!graph->searchNode(nodeAux->getId())) {
+      return nodeAux;
+    }
+  }
+  return nullptr;
+}
+
+// Auxliar kruskal preenche a lista de arestas e a ordena pelo peso
+void Graph::auxKruskal(list<Edge *> &edgesList, vector<Node *> &vetNodes) {
+  for (Node *p = this->getFirstNode(); p != nullptr; p = p->getNextNode()) {
+    for (Edge *edgeAux = p->getFirstEdge(); edgeAux != nullptr; edgeAux = edgeAux->getNextEdge()) {
+      list<Edge *>::iterator itEdge = find(edgesList.begin(), edgesList.end(), edgeAux);
+      vector<Node *>::iterator itAux = find(vetNodes.begin(), vetNodes.end(), p);
+      vector<Node *>::iterator itNode = find(vetNodes.begin(), vetNodes.end(), this->getNode(edgeAux->getTargetId()));
+      if (itEdge == edgesList.end() &&
+          (itAux == vetNodes.end() || itNode == vetNodes.end() || !breadthFirstSearch(p->getId(), edgeAux->getTargetId(), false)))
+        edgesList.push_back(edgeAux);
+    }
+  }
+
+  edgesList.sort([](Edge *edge1, Edge *edge2) { return edge1->getWeight() < edge2->getWeight(); });
 }
 
 void Graph::agmPrim(int idSource)
