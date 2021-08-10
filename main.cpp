@@ -144,6 +144,15 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //Caminho mínimo entre dois vértices usando Dijkstra;
     case 2:
     {
+        cout << "Caminho mínimo entre dois vértices usando Dijkstra" << endl;
+        int idSource, idTarget;
+        
+        cout << "Digite o vertice inicial e o vertice final para a busca do caminho minimo!" << endl;
+        cin >> idSource >> idTarget;
+
+        cout << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
+             << "eh: " << graph->dijkstra(idSource, idTarget);
+
 
         break;
     }
@@ -151,6 +160,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //Caminho mínimo entre dois vértices usando Floyd;
     case 3:
     {
+        cout << "Caminho mínimo entre dois vértices usando Floyd" << endl;
         int idSource, idTarget;
 
         cout << "Digite o vertice inicial e o vertice final para a busca do caminho minimo!" << endl;

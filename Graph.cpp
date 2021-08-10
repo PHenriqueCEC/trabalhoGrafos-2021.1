@@ -13,6 +13,7 @@
 #include <float.h>
 #include <iomanip>
 #include <algorithm>
+#include <map>
 
 #define INFINITE 2147483647 //valor maximo de uma variavel int
 

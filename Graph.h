@@ -9,6 +9,8 @@
 #include <stack>
 #include <list>
 #include <vector>
+#include <map>
+#include <set>
 
 using namespace std;
 
@@ -53,7 +55,7 @@ public:
     Graph *agmKuskal();
     void agmPrim(int idSource);
     float floydMarshall(int idSource, int idTarget);
-    float dijkstra(int idSource, int idTarget);
+    float *dijkstra(int idSource, int idTarget);
     vector<int> depthFirstSearch(vector<int> vertexVector, int idSource, int graphOrder,
                                  int *count);
     vector<int> auxDepth(vector<int> vertexVector, int idNode, int *count);
