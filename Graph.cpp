@@ -653,24 +653,26 @@ Graph *agmKuskal()
 
 void Graph::agmPrim(int idSource)
 {
-    Node *p = getNode(idSource);
+    Node *p = this->getNode(idSource);
 
     if (p == nullptr)
     {
-        cout << "Noh inicial nao encontrado!";
+        cout << "Noh inicial nao encontrado!" << endl;
         return;
     }
 
-    while (p->getDegree() == 0)
+    while (p->getInDegree() == 0) 
     {
-        if (p->getId() != idSource)
+        if (p->getId() == idSource)
         {
-            p = p->getNextNode();
+            
+            p = getFirstNode();
         }
         else
         {
-            p = getFirstNode();
+            p = p->getNextNode();
         }
+
     }
 
     idSource = p->getId();
@@ -721,6 +723,12 @@ void Graph::agmPrim(int idSource)
 
 void Graph::printPrimTree()
 {
+
+    if(order == 0)
+    {
+        cout << "ARVORE VAZIA!" << endl;
+        return;
+    }
 
     cout << "Ordem da arvore de prim: " << order << endl;
 

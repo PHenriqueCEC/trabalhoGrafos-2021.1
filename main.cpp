@@ -177,7 +177,6 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     case 4:
     {
         cout << "Árvore Geradora Mínima de Prim" << endl;
-
         int idSource;
 
         cout << "Digite o vertice inicial: " << endl;

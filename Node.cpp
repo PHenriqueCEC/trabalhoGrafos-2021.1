@@ -231,7 +231,7 @@ int Node::getIndex()
 
 int Node::getDegree()
 {
-    return degree;
+    return this->degree;
 }
 
 void Node::setId(int _id)
