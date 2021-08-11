@@ -393,28 +393,28 @@ float **Graph::initializeMatrixFloydMarshall()
 
 float *Graph::dijkstra(int idSource, int idTarget)
 {
-    Node *rootNode = this->getNode(idSource);
+    Node *sourceNode = this->getNode(idSource);
     Node *targetNode = this->getNode(idTarget);
 
-    if (rootNode == nullptr)
+    if (sourceNode == nullptr)
     {
-        cout << "\n[Dijkstra]: Node inicial nao encontrado";
+        cout << "\n[Dijkstra]: No de origem nao encontrado";
         return nullptr;
     }
     if (targetNode == nullptr)
     {
-        cout << "\n[Dijkstra]: Node target nao encontrado";
+        cout << "\n[Dijkstra]: No alvo nao encontrado";
         return nullptr;
     }
 
     set<Node *> nodeList;
-    nodeList.insert(rootNode);
+    nodeList.insert(sourceNode);
     map<Node *, Node *> nodeMap;
     float distances[this->order];
 
     for (Node *p = this->getFirstNode(); p != NULL; p = p->getNextNode())
     {
-        Edge *edge = rootNode->hasEdgeBetween(p->getId());
+        Edge *edge = sourceNode->hasEdgeBetween(p->getId());
 
         if (edge != nullptr)
         {
@@ -426,8 +426,8 @@ float *Graph::dijkstra(int idSource, int idTarget)
         }
     }
 
-    int rootIndex = rootNode->getIndex();
-    distances[rootIndex] = 0;
+    int sourceIndex = sourceNode->getIndex();
+    distances[sourceIndex] = 0;
 
     while (nodeList.size() > 0)
     {
@@ -436,15 +436,15 @@ float *Graph::dijkstra(int idSource, int idTarget)
         this->updateDistances(nearestNode, distances, &nodeList, &nodeMap);
     }
 
-    set<Node *> minimumPath = this->getMinimumPath(targetNode, &nodeMap);
+    set<Node *> shortestPath = this->getShortestPath(targetNode, &nodeMap);
 
-    for (set<Node *>::iterator it = minimumPath.begin(); it != minimumPath.end(); it++)
+    for (set<Node *>::iterator it = shortestPath.begin(); it != shortestPath.end(); it++)
     {
         cout << (*it)->getId() << "  ";
     }
 }
-// Auxiliar Dijsktra para achar o caminho minimo
-set<Node *> Graph::getMinimumPath(Node *idTarget, map<Node *, Node *> *nodeMap)
+// Auxiliar Dijkstra para achar o caminho minimo
+set<Node *> Graph::getShortestPath(Node *idTarget, map<Node *, Node *> *nodeMap)
 {
     set<Node *> path;
     Node *step = idTarget;
@@ -465,53 +465,53 @@ set<Node *> Graph::getMinimumPath(Node *idTarget, map<Node *, Node *> *nodeMap)
     }
     return path;
 }
-// Auxiliar Dijsktra para atualizar as estruturas que determinam as distancia para o initialNode
-void Graph::updateDistances(Node *initialNode, float *distances, set<Node *> *nodeList, map<Node *, Node *> *nodeMap)
+// Auxiliar Dijkstra para atualizar as estruturas que determinam as distancia para o sourceNode
+void Graph::updateDistances(Node *sourceNode, float *distances, set<Node *> *nodeList, map<Node *, Node *> *nodeMap)
 {
-    for (Edge *edge = initialNode->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge())
+    for (Edge *edge = sourceNode->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge())
     {
 
         int indexTargetNode = getNode(edge->getTargetId())->getIndex();
-        int indexInitialNode = initialNode->getIndex();
+        int indexSourceNode = sourceNode->getIndex();
 
-        if (distances[indexTargetNode] >= distances[indexInitialNode] + edge->getWeight())
+        if (distances[indexTargetNode] >= distances[indexSourceNode] + edge->getWeight())
         {
-            distances[indexTargetNode] = distances[indexInitialNode] + edge->getWeight();
+            distances[indexTargetNode] = distances[indexSourceNode] + edge->getWeight();
 
             Node *targetNode = this->getNode(edge->getTargetId());
             map<Node *, Node *>::iterator it = nodeMap->find(targetNode);
 
             if (it == nodeMap->end())
             {
-                nodeMap->insert(make_pair(targetNode, initialNode));
+                nodeMap->insert(make_pair(targetNode, sourceNode));
             }
             else
             {
-                (*it).second = initialNode;
+                (*it).second = sourceNode;
             }
             nodeList->insert(targetNode);
         }
     }
 }
-// Auxiliar Dijsktra para achar o node mais proximo
+// Auxiliar Dijkstra para achar o node mais proximo
 Node *Graph::getNearestNode(set<Node *> const &nodeList, float *distances)
 {
-    Node *auxNode = nullptr;
+    Node *p = nullptr;
 
     for (set<Node *>::iterator it = nodeList.begin(); it != nodeList.end(); ++it)
     {
-        if (auxNode == nullptr)
+        if (p == nullptr)
         {
-            auxNode = *it;
+            p = *it;
         }
         else
         {
-            if (distances[(*it)->getIndex()] < distances[auxNode->getIndex()])
-                auxNode = *it;
+            if (distances[(*it)->getIndex()] < distances[p->getIndex()])
+                p = *it;
         }
     }
 
-    return auxNode;
+    return p;
 }
 
 //function that prints a topological sorting
