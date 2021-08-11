@@ -743,8 +743,8 @@ void Graph::printPrimTree()
 }
 
 void printGrafoDot(ofstream& file) {
-   //  ofstream grafoDotFile;
-   //  grafoDotFile.open(path,ios::in);
+    ofstream grafoDotFile;
+    grafoDotFile.open(path,ios::in);
 
     if(file.is_open()) {
 		cout << "salvando no dot" << endl;
