@@ -71,7 +71,7 @@ private:
     //Auxiliar methods
     float **initializeMatrixFloydMarshall();
     Node *getNearestNode(set<Node *> const &nodeList, float *distances);
-    set<Node *> getMinimumPath(Node *targetNode, map<Node *, Node *> *nodeMap);
+    set<Node *> getShortestPath(Node *targetNode, map<Node *, Node *> *nodeMap);
     void updateDistances(Node *initialNode, float *distances, set<Node *> *nodeList, map<Node *, Node *> *nodeMap);
     Node *nodeNotExist(Node *p, Graph *graph);
     void printPrimTree();
