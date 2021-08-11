@@ -140,7 +140,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     {
         cout << "Subgrafo induzido por um conjunto de vértices X " << endl;
 
-        cout << "AINDA NAO IMPLEMENTADO!" << endl; 
+        cout << "AINDA NAO IMPLEMENTADO!" << endl;
 
         break;
     }
@@ -156,6 +156,9 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         cout << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
              << "eh: " << graph->dijkstra(idSource, idTarget);
 
+        output_file << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
+                    << "eh: " << graph->dijkstra(idSource, idTarget);
+
         break;
     }
 
@@ -168,8 +171,14 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         cout << "Digite o vertice inicial e o vertice final para a busca do caminho minimo!" << endl;
         cin >> idSource >> idTarget;
 
+        float distance = graph->floydMarshall(idSource, idTarget);
+
         cout << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
-             << "eh: " << graph->floydMarshall(idSource, idTarget);
+             << "eh: " << distance << endl;
+
+        output_file << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
+                    << "eh: " << distance << endl;
+
         break;
     }
 
@@ -190,6 +199,10 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //AGM Kruskal;
     case 5:
     {
+
+        cout << "Arovre Geradora Minima de Kruskal" << endl;
+
+        cout << "AINDA NAO IMPLEMENTADO!" << endl;
 
         break;
     }
@@ -212,7 +225,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     {
         cout << "Ordenação Topologica" << endl;
 
-        cout << "AINDA NAO IMPLEMENTADO!" << endl; 
+        cout << "AINDA NAO IMPLEMENTADO!" << endl;
 
         break;
     }
