@@ -393,28 +393,24 @@ float **Graph::initializeMatrixFloydMarshall()
 
 float *Graph::dijkstra(int idSource, int idTarget)
 {
-    Node *sourceNode = this->getNode(idSource);
-    Node *targetNode = this->getNode(idTarget);
+    Node *source_node = getNode(idSource);
+    Node *target_node = getNode(idTarget);
 
-    if (sourceNode == nullptr)
+    if (source_node == nullptr || target_node == nullptr )
     {
-        cout << "\n[Dijkstra]: No de origem nao encontrado";
-        return nullptr;
-    }
-    if (targetNode == nullptr)
-    {
-        cout << "\n[Dijkstra]: No alvo nao encontrado";
+        cout << " No de origem ou de destino nao encontrado!" << endl;
         return nullptr;
     }
 
     set<Node *> nodeList;
-    nodeList.insert(sourceNode);
+    nodeList.insert(source_node);
     map<Node *, Node *> nodeMap;
-    float distances[this->order];
+    
+    float distances[order];
 
-    for (Node *p = this->getFirstNode(); p != NULL; p = p->getNextNode())
+    for (Node *p = getFirstNode(); p != NULL; p = p->getNextNode())
     {
-        Edge *edge = sourceNode->hasEdgeBetween(p->getId());
+        Edge *edge = source_node->hasEdgeBetween(p->getId());
 
         if (edge != nullptr)
         {
@@ -426,17 +422,17 @@ float *Graph::dijkstra(int idSource, int idTarget)
         }
     }
 
-    int sourceIndex = sourceNode->getIndex();
+    int sourceIndex = source_node->getIndex();
     distances[sourceIndex] = 0;
 
     while (nodeList.size() > 0)
     {
         Node *nearestNode = this->getNearestNode(nodeList, distances);
         nodeList.erase(nearestNode);
-        this->updateDistances(nearestNode, distances, &nodeList, &nodeMap);
+        updateDistances(nearestNode, distances, &nodeList, &nodeMap);
     }
 
-    set<Node *> shortestPath = this->getShortestPath(targetNode, &nodeMap);
+    set<Node *> shortestPath = this->getShortestPath(target_node, &nodeMap);
 
     for (set<Node *>::iterator it = shortestPath.begin(); it != shortestPath.end(); it++)
     {

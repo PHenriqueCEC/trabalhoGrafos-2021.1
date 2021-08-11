@@ -156,6 +156,9 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         cout << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
              << "eh: " << graph->dijkstra(idSource, idTarget);
 
+        output_file << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
+             << "eh: " << graph->dijkstra(idSource, idTarget);
+
         break;
     }
 
