@@ -6,6 +6,7 @@
 #define NODE_H_INCLUDED
 #include "Edge.h" // Include of the Edge class
 #include <deque>
+#include <math.h>
 
 using namespace std;
 
@@ -23,13 +24,17 @@ class Node {
         unsigned int degree;
         float weight;
         Node* next_node;
+        float x;
+        float y;
 
     public:
         // Constructor
         Node(int _id, int _index);
         Node(int _id);
+        
         // Destructor
         ~Node();
+        
         // Getters
         Edge* getFirstEdge();
         Edge* getLastEdge();
@@ -38,9 +43,15 @@ class Node {
         int getOutDegree();
         float getWeight();
         Node* getNextNode();
+        float getX();
+        float getY();
+        
         // Setters
         void setNextNode(Node* node);
         void setWeight(float weight);
+        void setX(float _x);
+        void setY(float _y);
+        
         // Other methods
         bool searchEdge(int target_id);
         void insertEdge(int target_id, float weight);
@@ -51,10 +62,12 @@ class Node {
         void incrementInDegree();
         void decrementInDegree();
         Edge* hasEdgeBetween(int target_id);
+        Edge* createEdge(float x, float y);
         // Auxiliar methods
         int getIndex();
         int getDegree();
         void setId(int _id);
+
 
 };
 

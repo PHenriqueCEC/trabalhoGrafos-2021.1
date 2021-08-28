@@ -84,6 +84,16 @@ Node* Node::getNextNode()
     return this->next_node;
 }
 
+float Node::getX()
+{
+    return x;
+}
+
+float Node::getY()
+{
+    return y;
+}
+
 // Setters
 
 void Node::setNextNode(Node* next_node)
@@ -94,6 +104,16 @@ void Node::setNextNode(Node* next_node)
 void Node::setWeight(float weight)
 {
     this->weight = weight;
+}
+
+void Node::setX(float _x)
+{
+    x = _x;
+}
+
+void Node::setY(float _y)
+{
+    y = _y;
 }
 
 // Other methods
@@ -192,6 +212,15 @@ bool Node::searchEdge(int target_id)
     }
 
     return false;
+}
+
+Edge* Node::createEdge(float x, float y)
+{
+    float dist_x = pow((x - x), 2);
+    float dist_y = pow((y - y), 2);
+
+    float total_dist = sqrt(dist_x + dist_y);
+
 }
 
 void Node::incrementInDegree()
