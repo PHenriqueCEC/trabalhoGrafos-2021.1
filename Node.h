@@ -24,8 +24,6 @@ class Node {
         unsigned int degree;
         float weight;
         Node* next_node;
-        float x;
-        float y;
 
     public:
         // Constructor
@@ -43,15 +41,11 @@ class Node {
         int getOutDegree();
         float getWeight();
         Node* getNextNode();
-        float getX();
-        float getY();
-        
+
         // Setters
         void setNextNode(Node* node);
         void setWeight(float weight);
-        void setX(float _x);
-        void setY(float _y);
-        
+
         // Other methods
         bool searchEdge(int target_id);
         void insertEdge(int target_id, float weight);

@@ -63,9 +63,9 @@ public:
     vector<int> auxDepth(vector<int> vertexVector, int idNode, int *count);
     
     //methods phase1
-    float greed();
-    float greedRandom();
-    float greedRactiveRandom();
+    void greed();
+    void greedRandom();
+    void greedRactiveRandom();
 
 private:
     //Auxiliar methods

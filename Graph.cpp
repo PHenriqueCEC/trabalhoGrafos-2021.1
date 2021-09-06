@@ -741,3 +741,20 @@ void Graph::printPrimTree()
         cout << endl;
     }
 }
+
+void Graph::greed() 
+{
+    
+
+
+}
+
+void Graph::greedRandom()
+{
+
+}
+
+void Graph::greedRactiveRandom()
+{
+
+}

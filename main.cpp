@@ -249,6 +249,51 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         break;
     }
 
+    case 9:
+    {
+        cout << "Algoritmo Guloso" << endl;
+
+        clock_t tInicio, tFim, tTotal;
+
+        tInicio = clock();
+        graph->greed();
+        tFim = clock();
+
+        tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
+
+        cout << "Tempo decorrido " << tTotal << "ms" << endl;
+    }
+
+    case 10:
+    {
+        cout << "Algoritmo Guloso Randomizado" << endl;
+
+        clock_t tInicio, tFim, tTotal;
+
+        tInicio = clock();
+        graph->greedRandom();
+        tFim = clock();
+
+        tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
+
+        cout << "Tempo decorrido " << tTotal << "ms" << endl;
+    }
+
+    case 11: 
+    {
+        cout << "Algoritmo Guloso Randomizado Reativo" << endl;
+
+        clock_t tInicio, tFim, tTotal;
+
+        tInicio = clock();
+        graph->greedRactiveRandom();
+        tFim = clock();
+
+        tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
+
+        cout << "Tempo decorrido " << tTotal << "ms" << endl;
+    }
+
     default:
     {
         cout << " Error!!! invalid option!!" << endl;
