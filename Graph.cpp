@@ -749,8 +749,21 @@ void Graph::greed()
 
 }
 
-void Graph::greedRandom()
+void Graph::greedRandom(float *alphaValues, int numAlpha, int repetitions)
 {
+    for(int i = 0; i < numAlpha; i++)
+    {
+        float alpha = alphaValues[i];
+
+        cout << "Alpha: " << alpha << endl;
+
+        for(int j = 0; j < repetitions; j++)
+        {
+            
+        }
+
+
+    }
 
 }
 

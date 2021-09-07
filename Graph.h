@@ -64,7 +64,7 @@ public:
     
     //methods phase1
     void greed();
-    void greedRandom();
+    void greedRandom(float *alphaValues, int numAlpha, int repetitions);
     void greedRactiveRandom();
 
 private:

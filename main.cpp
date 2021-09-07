@@ -262,21 +262,43 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
 
         cout << "Tempo decorrido " << tTotal << "ms" << endl;
+
+        break;
     }
 
     case 10:
     {
         cout << "Algoritmo Guloso Randomizado" << endl;
+        int numAlpha = 1; //inicializa automaticamente com 1
 
+        cout << "Numero de testes a serem realizados: " << endl;
+        cin >> numAlpha;
+
+        float *alphaValues = new float[numAlpha];
+
+        cout << "Insira os valores de alpha: " << endl;
+
+        for(int i = 0; i < numAlpha; i++)
+        {
+            cout << "Insira o valor " << (i + 1) << endl;
+            cin >> alphaValues[i];
+        }
+
+        int repetitions = 1; //inicializa automaticamente com 1
+        
+        cout << "Insira o numero de repeticoes dos valores de Alpha: " << endl;
+        cin >> repetitions;
         clock_t tInicio, tFim, tTotal;
 
         tInicio = clock();
-        graph->greedRandom();
+        graph->greedRandom(alphaValues, numAlpha, repetitions);
         tFim = clock();
 
         tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
 
         cout << "Tempo decorrido " << tTotal << "ms" << endl;
+
+        break;
     }
 
     case 11: 
@@ -291,13 +313,17 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
 
         tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
 
-        cout << "Tempo decorrido " << tTotal << "ms" << endl;
+        cout << "Tempo decorrido de " << tTotal << "ms" << endl;
+
+        break;
     }
 
     default:
     {
         cout << " Error!!! invalid option!!" << endl;
+        break;
     }
+
     }
 }
 
