@@ -193,7 +193,7 @@ bool Node::searchEdge(int target_id)
 
     return false;
 }
-
+/*
 Edge* Node::createEdge(float x, float y)
 {
     float dist_x = pow((x - x), 2);
@@ -202,7 +202,7 @@ Edge* Node::createEdge(float x, float y)
     float total_dist = sqrt(dist_x + dist_y);
 
 }
-
+*/
 void Node::incrementInDegree()
 {
     this->in_degree++;

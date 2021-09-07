@@ -27,7 +27,14 @@ using namespace std;
 // Constructor
 Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node)
 {
+   
 
+
+
+
+
+
+//////////
     this->order = order;
     this->directed = directed;
     this->weighted_edge = weighted_edge;
@@ -254,10 +261,10 @@ void Graph::breadthFirstSearch(int idSource, int idTarget, ofstream &output_file
 
     int path_traveled[order] = {-1};
     path_traveled[0] = idSource;
-    
+
     int path_index = 0;
     deque<Node *> node_deque;
-    
+
     node_deque.push_back(initial_node);
 
     while (!node_deque.empty())
@@ -288,24 +295,24 @@ void Graph::breadthFirstSearch(int idSource, int idTarget, ofstream &output_file
 }
 
 // Verifica se o id existe em uma fila de nodes
-bool Graph::idExistsQueue(int id, deque<Node *> const &deque) 
+bool Graph::idExistsQueue(int id, deque<Node *> const &deque)
 {
-  for (int i = 0; i < deque.size(); i++) 
-  {
-    if (deque.at(i)->getId() == id)
-      return true;
-  }
-  return false;
+    for (int i = 0; i < deque.size(); i++)
+    {
+        if (deque.at(i)->getId() == id)
+            return true;
+    }
+    return false;
 }
 
 bool Graph::valueInArray(int value, int *array, int size)
 {
-    for (int i = 0; i < size; i++) 
+    for (int i = 0; i < size; i++)
     {
         if (array[i] == value)
             return true;
-  }
-  return false;
+    }
+    return false;
 }
 
 float Graph::floydMarshall(int idSource, int idTarget)
@@ -390,13 +397,13 @@ float **Graph::initializeMatrixFloydMarshall()
 
     return dist;
 }
-
+/*
 float *Graph::dijkstra(int idSource, int idTarget)
 {
     Node *source_node = getNode(idSource);
     Node *target_node = getNode(idTarget);
 
-    if (source_node == nullptr || target_node == nullptr )
+    if (source_node == nullptr || target_node == nullptr)
     {
         cout << " No de origem ou de destino nao encontrado!" << endl;
         return nullptr;
@@ -405,7 +412,7 @@ float *Graph::dijkstra(int idSource, int idTarget)
     set<Node *> nodeList;
     nodeList.insert(source_node);
     map<Node *, Node *> nodeMap;
-    
+
     float distances[order];
 
     for (Node *p = getFirstNode(); p != NULL; p = p->getNextNode())
@@ -439,6 +446,7 @@ float *Graph::dijkstra(int idSource, int idTarget)
         cout << (*it)->getId() << "  ";
     }
 }
+
 // Auxiliar Dijkstra para achar o caminho minimo
 set<Node *> Graph::getShortestPath(Node *idTarget, map<Node *, Node *> *nodeMap)
 {
@@ -462,6 +470,9 @@ set<Node *> Graph::getShortestPath(Node *idTarget, map<Node *, Node *> *nodeMap)
     return path;
 }
 // Auxiliar Dijkstra para atualizar as estruturas que determinam as distancia para o sourceNode
+
+*/
+
 void Graph::updateDistances(Node *sourceNode, float *distances, set<Node *> *nodeList, map<Node *, Node *> *nodeMap)
 {
     for (Edge *edge = sourceNode->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge())
@@ -639,13 +650,9 @@ vector<int> Graph::auxDepth(vector<int> vertexVector, int idNode, int *count)
     return vertexVector;
 }
 
-Graph *getVertexInduced(int *listIdNodes)
+/* Graph *getVertexInduced(int *listIdNodes)
 {
-}
-
-Graph *agmKuskal()
-{
-}
+} */
 
 void Graph::agmPrim(int idSource)
 {
@@ -657,18 +664,17 @@ void Graph::agmPrim(int idSource)
         return;
     }
 
-    while (p->getInDegree() == 0) 
+    while (p->getInDegree() == 0)
     {
         if (p->getId() == idSource)
         {
-            
+
             p = getFirstNode();
         }
         else
         {
             p = p->getNextNode();
         }
-
     }
 
     idSource = p->getId();
@@ -720,7 +726,7 @@ void Graph::agmPrim(int idSource)
 void Graph::printPrimTree()
 {
 
-    if(order == 0)
+    if (order == 0)
     {
         cout << "ARVORE VAZIA!" << endl;
         return;
@@ -742,32 +748,137 @@ void Graph::printPrimTree()
     }
 }
 
-void Graph::greed() 
+void Graph::greed()
 {
-    
-
-
 }
 
 void Graph::greedRandom(float *alphaValues, int numAlpha, int repetitions)
 {
-    for(int i = 0; i < numAlpha; i++)
+    for (int i = 0; i < numAlpha; i++)
     {
         float alpha = alphaValues[i];
 
         cout << "Alpha: " << alpha << endl;
 
-        for(int j = 0; j < repetitions; j++)
+        for (int j = 0; j < repetitions; j++)
         {
-            
         }
-
-
     }
-
 }
 
 void Graph::greedRactiveRandom()
 {
+}
 
+void Graph::printGrafoDot(ofstream &file)
+{
+    //  ofstream grafoDotFile;
+    //  grafoDotFile.open(path,ios::in);
+
+    if (file.is_open())
+    {
+        cout << "Salvando o Grafo" << endl;
+        Node *no = this->first_node;
+        Edge *aresta;
+        file << "graph { \n";
+        while (no != nullptr)
+        {
+            aresta = no->getFirstEdge();
+            if (aresta != nullptr)
+            {
+                while (aresta != nullptr)
+                {
+
+                    if (this->directed == 1)
+                    {
+                        file << "   " << no->getId() << "->" << aresta->getTargetId() << "\n";
+                    }
+                    else if (this->weighted_edge == 1)
+                    {
+                        file << "   " << no->getId() << "--" << aresta->getTargetId();
+                        file << " [label=" << aresta->getWeight() << ",weight=" << aresta->getWeight() << "]"
+                             << "\n";
+                    }
+                    else if (this->weighted_node == 1)
+                    {
+                    }
+                    else
+                    {
+                        file << "   " << no->getId() << "--" << aresta->getTargetId() << "\n";
+                    }
+                    aresta = aresta->getNextEdge();
+                }
+            }
+            no = no->getNextNode();
+        }
+        file << "}\n"
+             << endl;
+        cout << "Grafo armazanado em /home/romulo/www/Grafos/arquivos/outputFile.txt" << endl;
+    }
+    else
+    {
+        cout << "Falha ao abrir o arquivo" << endl;
+    }
+    file.close();
+
+}
+
+Graph *Graph::Kruskal()
+{
+    //estrutura inicial
+    vector<int> noOrigem;
+    vector<int> noDestino;
+    vector<float> arestaPeso;
+
+    //estrutura resolução
+    vector<int> noOrigemAux;
+    vector<int> noDestinoAux;
+    vector<float> arestaPesoAux;
+    vector<int> Aux;
+
+    //interadores
+    Node *no = this->first_node;
+    Edge *aresta;
+    
+    while (no != nullptr)
+    {
+        if (aresta != nullptr)
+        {
+            while (aresta != nullptr)
+            {
+                noOrigem.push_back(no->getId());
+                noDestino.push_back(aresta->getTargetId());
+                arestaPeso.push_back(aresta->getWeight());
+                aresta = aresta->getNextEdge();
+            }
+        }
+        no = no->getNextNode();
+    }
+    ////////////////////////ordenando os trem/////////////////////////
+    
+    
+    for (int i = 0; i < noOrigem.size(); i++)
+    {
+        arestaPesoAux.push_back(arestaPeso[i]);
+    }
+    
+    sort(arestaPesoAux.begin(), arestaPesoAux.end());
+    
+    for(int i = 0; i < arestaPesoAux.size(); i++)
+    {
+        for(int j = 0; j < arestaPeso.size(); i++)
+        {
+            if(arestaPesoAux[i] == arestaPeso[j])
+            {
+                if(any_of(noDestinoAux.begin(), noDestinoAux.end(), arestaPesoAux[j]) == false)
+                
+                        noOrigemAux[i] = noOrigem[j];
+                        noDestinoAux[i] = noDestino[j];
+                
+            }
+        }
+    }
+    
+    
+   
 }

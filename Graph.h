@@ -49,12 +49,13 @@ public:
     void removeNode(int id);
     bool searchNode(int id);
     Node *getNode(int id);
+    void printGrafoDot(ofstream& file);
 
     //methods phase1
     void topologicalSorting();
     void breadthFirstSearch(int idSource, int idTarget, ofstream &output_file);
     Graph *getVertexInduced(int *listIdNodes);
-    Graph *agmKuskal();
+    Graph* Kruskal();
     void agmPrim(int idSource);
     float floydMarshall(int idSource, int idTarget);
     float *dijkstra(int idSource, int idTarget);
