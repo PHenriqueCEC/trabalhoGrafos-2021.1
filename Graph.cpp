@@ -156,7 +156,7 @@ void Graph::insertEdge(int id, int target_id, float weight)
     exit->incrementInDegree();
     entry->incrementInDegree();
 
-    number_edges++;
+    this->number_edges++;
 }
 
 void Graph::removeNode(int id)

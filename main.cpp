@@ -13,7 +13,7 @@
 
 using namespace std;
 
-Graph *leitura(ifstream &input_file, int directed, int weightedEdge, int weightedNode)
+Graph *leitura(ifstream &input_file, int directed, int weightedEdge, int weightedNode,char const *argv[])
 {
 
     //Variáveis para auxiliar na criação dos nós no Grafo
@@ -79,48 +79,32 @@ Graph *leitura(ifstream &input_file, int directed, int weightedEdge, int weighte
     return graph;
 }
 
-Graph *leituraInstancia(ifstream &input_file, int directed, int weightedEdge, int weightedNode)
+void leituraInstancia2(ifstream &input_file, int directed, int weightedEdge, int weightedNode,Graph *graph)
 {
 
-    //Variáveis para auxiliar na criação dos nós no Grafo
-    int idNodeSource;
-    int idNodeTarget;
-    int order;
-    int numEdges;
-    int cluster;
-    int aux=0;
-    while (input_file >> cluster)
-    {
-        int auxOrigem = 0 , auxDestino = 0;
-        if (aux == 0)
-        {
-            order++;
-            cout << order << " " << cluster << endl;
-            if (cluster == 0)
-            {
-                cout << cluster;
-                aux = aux + 1;
-                order--;
-            }
-        }
-
-    }
-    //Criando objeto grafo
-    Graph *graph = new Graph(order, directed, weightedEdge, weightedNode);
     Node *nodeaux = new Node(-1);
     //Leitura de arquivo
-
-    aux = 0; //Fala que é para sair do primeiro loop
+    int cluster;
+    int aux = 0; //Fala que é para sair do primeiro loop
     int source = 0,target = 0,contador = 0;
+    int auxOrigem = 0 , auxDestino = 0;
     while (input_file >> cluster)
     {
-        int auxOrigem = 0 , auxDestino = 0;
+        
         if (aux == 0)
         {
             if (cluster == 0)
-            {
+            { 
                 aux = aux + 1;
+                contador = 0;
             }
+            else
+            {
+                graph->insertNode(contador);
+                nodeaux = graph->getNode(contador);
+                nodeaux->setCluster(cluster);
+            }
+            contador ++;
         }                    
         if (aux != 0)
         {
@@ -138,12 +122,44 @@ Graph *leituraInstancia(ifstream &input_file, int directed, int weightedEdge, in
                 }
             }
         }
-
-
     }
-    return graph;
-}
+}        
+Graph *leituraInstancia(ifstream &input_file, int directed, int weightedEdge, int weightedNode)
+{
 
+    //Variáveis para auxiliar na criação dos nós no Grafo
+    int idNodeSource;
+    int idNodeTarget;
+    int order;
+    int numEdges;
+    int cluster;
+    int aux=0;
+    while (input_file >> cluster)
+    {
+        
+        int auxOrigem = 0 , auxDestino = 0;
+        if (aux == 0)   
+        {
+            order++;
+        //    input_file.open(argv[1], ios::in);
+            if (cluster == 0)
+            {
+                aux = aux + 1;
+                order--;
+            }
+
+        }
+    }
+
+    //Criando objeto grafo
+    Graph *graph = new Graph(order, directed, weightedEdge, weightedNode);
+    graph->insertNode(0);
+    graph->insertNode(1);
+    graph->insertEdge(0, 1, 1);
+
+    return graph;
+
+}
 
 int menu(Graph *graph)
 {
@@ -169,7 +185,7 @@ int menu(Graph *graph)
     cout << graph->getNumberNodes() << endl;
     cin >> selecao;
 
-    return selecao;
+    return selecao; 
 }
 void selecionar(int selecao, Graph *graph, ofstream &output_file)
 {
@@ -358,7 +374,11 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
 
         break;
     }
-
+    case 12:
+    {
+        cout << "printando grafo dot";
+        graph->printGrafoDot(output_file);
+    }
     default:
     {
         cout << " Error!!! invalid option!!" << endl;
@@ -422,6 +442,9 @@ int main(int argc, char const *argv[])
     {
 
         graph = leituraInstancia(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]));
+        input_file.close();
+        input_file.open(argv[1], ios::in);
+        leituraInstancia2(input_file, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]),graph);
     }
     else
         cout << "Unable to open " << argv[1];
