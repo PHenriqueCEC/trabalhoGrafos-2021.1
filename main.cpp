@@ -87,17 +87,56 @@ Graph *leituraInstancia(ifstream &input_file, int directed, int weightedEdge, in
     int idNodeTarget;
     int order;
     int numEdges;
-
-    //Pegando a ordem do grafo
-    input_file >> order >> numEdges;
-
-    //Criando objeto grafo
+    int cluster;
+    int aux = 0;
+    while(input_file >> cluster)
+    {
+        if(aux == 0 )
+        {
+        order ++;
+        cout << order << " " <<cluster << endl; 
+        if (cluster == 0){
+            cout << cluster;
+            aux = aux+1;
+        }
+        }
+    }
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+    cout << order << endl ;
+        
+            //Criando objeto grafo
     Graph *graph = new Graph(order, directed, weightedEdge, weightedNode);
-
+    Node *nodeaux = new Node(-1);
     //Leitura de arquivo
+    while (input_file >> cluster)
+    {
+        int node = 0;
+        nodeaux = graph->getNode(node);
+        nodeaux->setCluster(cluster);
+        node ++;
+    }
+
     while (input_file >> idNodeSource >> idNodeTarget)
     {
-
         graph->insertEdge(idNodeSource, idNodeTarget, 0);
     }
 
@@ -128,10 +167,9 @@ int menu()
 
     return selecao;
 }
-
+//16eil101.gr10
 void selecionar(int selecao, Graph *graph, ofstream &output_file)
 {
-
     switch (selecao)
     {
 

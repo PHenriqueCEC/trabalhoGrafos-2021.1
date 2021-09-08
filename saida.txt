@@ -1,6 +1,0 @@
-A Distancia minima do vertice1 ao vertice 3eh: inf
-
-A Distancia minima do vertice1 ao vertice 3eh: inf
-
-A Distancia minima do vertice1 ao vertice 4eh: inf
-

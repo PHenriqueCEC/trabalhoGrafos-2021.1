@@ -804,7 +804,6 @@ void Graph::printGrafoDot(ofstream &file)
         }
         file << "}\n"
              << endl;
-        cout << "Grafo armazanado em /home/romulo/www/Grafos/arquivos/outputFile.txt" << endl;
     }
     else
     {

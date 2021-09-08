@@ -84,6 +84,11 @@ Node* Node::getNextNode()
     return this->next_node;
 }
 
+int Node::getCluster()
+{
+    return this->cluster;
+}
+
 // Setters
 
 void Node::setNextNode(Node* next_node)
@@ -94,6 +99,11 @@ void Node::setNextNode(Node* next_node)
 void Node::setWeight(float weight)
 {
     this->weight = weight;
+}
+
+void Node::setCluster(int clusterID)
+{
+    this->cluster = clusterID;
 }
 
 // Other methods

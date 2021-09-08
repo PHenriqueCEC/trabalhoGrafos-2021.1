@@ -25,6 +25,8 @@ class Node {
         float weight;
         Node* next_node;
 
+        int cluster;
+
     public:
         // Constructor
         Node(int _id, int _index);
@@ -41,10 +43,12 @@ class Node {
         int getOutDegree();
         float getWeight();
         Node* getNextNode();
+        int getCluster();
 
         // Setters
         void setNextNode(Node* node);
         void setWeight(float weight);
+        void setCluster(int clusterID);
 
         // Other methods
         bool searchEdge(int target_id);
