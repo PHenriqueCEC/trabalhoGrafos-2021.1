@@ -19,7 +19,7 @@ Graph *leitura(ifstream &input_file, int directed, int weightedEdge, int weighte
     //Variáveis para auxiliar na criação dos nós no Grafo
     int idNodeSource;
     int idNodeTarget;
-    int order;
+    int order=0;
 
     //Pegando a ordem do grafo
     input_file >> order;
@@ -202,8 +202,11 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         break;
     }
         //Caminho mínimo entre dois vértices usando Dijkstra;
-        /*case 2:
+        case 2:
     {
+        cout << "printando grafo dot";
+        graph->printGrafoDot(output_file);
+        /*
         cout << "Caminho mínimo entre dois vértices usando Dijkstra" << endl;
         int idSource, idTarget;
 
@@ -216,9 +219,11 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         output_file << "A Distancia minima do vertice" << idSource << " ao vertice " << idTarget
                     << "eh: " << graph->dijkstra(idSource, idTarget);
 
-        break;
+        */
+       break;
+        
     }
-*/
+
         //Caminho mínimo entre dois vértices usando Floyd;
     case 3:
     {
@@ -376,8 +381,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
     }
     case 12:
     {
-        cout << "printando grafo dot";
-        graph->printGrafoDot(output_file);
+
     }
     default:
     {
