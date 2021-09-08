@@ -88,61 +88,62 @@ Graph *leituraInstancia(ifstream &input_file, int directed, int weightedEdge, in
     int order;
     int numEdges;
     int cluster;
-    int aux = 0;
-    while(input_file >> cluster)
+    int aux=0;
+    while (input_file >> cluster)
     {
-        if(aux == 0 )
+        int auxOrigem = 0 , auxDestino = 0;
+        if (aux == 0)
         {
-        order ++;
-        cout << order << " " <<cluster << endl; 
-        if (cluster == 0){
-            cout << cluster;
-            aux = aux+1;
+            order++;
+            cout << order << " " << cluster << endl;
+            if (cluster == 0)
+            {
+                cout << cluster;
+                aux = aux + 1;
+                order--;
+            }
         }
-        }
+
     }
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-    cout << order << endl ;
-        
-            //Criando objeto grafo
+    //Criando objeto grafo
     Graph *graph = new Graph(order, directed, weightedEdge, weightedNode);
     Node *nodeaux = new Node(-1);
     //Leitura de arquivo
+
+    aux = 0; //Fala que é para sair do primeiro loop
+    int source = 0,target = 0,contador = 0;
     while (input_file >> cluster)
     {
-        int node = 0;
-        nodeaux = graph->getNode(node);
-        nodeaux->setCluster(cluster);
-        node ++;
+        int auxOrigem = 0 , auxDestino = 0;
+        if (aux == 0)
+        {
+            if (cluster == 0)
+            {
+                aux = aux + 1;
+            }
+        }                    
+        if (aux != 0)
+        {
+            contador++;
+            if (contador % 3 == 1)
+                source = cluster;
+            else 
+            {
+                if (contador % 3 == 2)
+                    target = cluster;
+                else
+                {
+                    if (contador % 3 == 0)
+                        graph->insertEdge(source, target, cluster);
+                }
+            }
+        }
+
+
     }
 
-    while (input_file >> idNodeSource >> idNodeTarget)
-    {
-        graph->insertEdge(idNodeSource, idNodeTarget, 0);
-    }
 
-    return graph;
-}
-    
+
 int menu(Graph *graph)
 {
 
@@ -162,9 +163,9 @@ int menu(Graph *graph)
     cout << "[10] Algoritmo Guloso Randomizado " << endl;
     cout << "[11] Algoritmo Guloso Randomizado Reativo" << endl;
     cout << "[0] Sair" << endl;
-    cout << graph->getOrder();
-    cout << graph->getNumberEdges();
-    cout << graph->getNumberNodes();
+    cout << graph->getOrder() << endl;
+    cout << graph->getNumberEdges() << endl;
+    cout << graph->getNumberNodes() << endl;
     cin >> selecao;
 
     return selecao;
@@ -184,7 +185,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         break;
     }
         //Caminho mínimo entre dois vértices usando Dijkstra;
-    /*case 2:
+        /*case 2:
     {
         cout << "Caminho mínimo entre dois vértices usando Dijkstra" << endl;
         int idSource, idTarget;
@@ -317,14 +318,14 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
 
         cout << "Insira os valores de alpha: " << endl;
 
-        for(int i = 0; i < numAlpha; i++)
+        for (int i = 0; i < numAlpha; i++)
         {
             cout << "Insira o valor " << (i + 1) << endl;
             cin >> alphaValues[i];
         }
 
         int repetitions = 1; //inicializa automaticamente com 1
-        
+
         cout << "Insira o numero de repeticoes dos valores de Alpha: " << endl;
         cin >> repetitions;
         clock_t tInicio, tFim, tTotal;
@@ -340,7 +341,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         break;
     }
 
-    case 11: 
+    case 11:
     {
         cout << "Algoritmo Guloso Randomizado Reativo" << endl;
 
@@ -362,7 +363,6 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         cout << " Error!!! invalid option!!" << endl;
         break;
     }
-
     }
 }
 
@@ -374,7 +374,7 @@ int mainMenu(ofstream &output_file, Graph *graph)
     while (selecao != 0)
     {
         system("clear");
-        selecao = menu( graph);
+        selecao = menu(graph);
 
         if (output_file.is_open())
             selecionar(selecao, graph, output_file);
