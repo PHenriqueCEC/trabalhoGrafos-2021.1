@@ -103,7 +103,7 @@ Graph *leituraInstancia(ifstream &input_file, int directed, int weightedEdge, in
 
     return graph;
 }
-
+    
 int menu()
 {
 

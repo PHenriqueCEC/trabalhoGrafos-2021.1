@@ -32,6 +32,7 @@ private:
 public:
     //Constructor
     Graph(int order, bool directed, bool weighted_edge, bool weighted_node);
+
     //Destructor
     ~Graph();
     //Getters
@@ -55,7 +56,7 @@ public:
     void topologicalSorting();
     void breadthFirstSearch(int idSource, int idTarget, ofstream &output_file);
     Graph *getVertexInduced(int *listIdNodes);
-    Graph* Kruskal();
+    Graph *Kruskal(Graph *graph);
     void agmPrim(int idSource);
     float floydMarshall(int idSource, int idTarget);
     float *dijkstra(int idSource, int idTarget);

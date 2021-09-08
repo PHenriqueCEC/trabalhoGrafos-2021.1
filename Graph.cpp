@@ -27,14 +27,6 @@ using namespace std;
 // Constructor
 Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node)
 {
-   
-
-
-
-
-
-
-//////////
     this->order = order;
     this->directed = directed;
     this->weighted_edge = weighted_edge;
@@ -48,7 +40,6 @@ Graph::Graph(int order, bool directed, bool weighted_edge, bool weighted_node)
 // Destructor
 Graph::~Graph()
 {
-
     Node *next_node = this->first_node;
 
     while (next_node != nullptr)
@@ -823,7 +814,7 @@ void Graph::printGrafoDot(ofstream &file)
 
 }
 
-Graph *Graph::Kruskal()
+Graph *Graph::Kruskal(Graph *graph)
 {
     //estrutura inicial
     vector<int> noOrigem;
@@ -834,7 +825,7 @@ Graph *Graph::Kruskal()
     vector<int> noOrigemAux;
     vector<int> noDestinoAux;
     vector<float> arestaPesoAux;
-    vector<int> Aux;
+    vector<int> aux;
 
     //interadores
     Node *no = this->first_node;
@@ -855,8 +846,10 @@ Graph *Graph::Kruskal()
         no = no->getNextNode();
     }
     ////////////////////////ordenando os trem/////////////////////////
-    
-    
+    noOrigem.resize((noOrigem.size()+1));
+    noDestino.resize((noOrigem.size()+1));
+    std::vector<int>::iterator it1;
+    std::vector<int>::iterator it2;
     for (int i = 0; i < noOrigem.size(); i++)
     {
         arestaPesoAux.push_back(arestaPeso[i]);
@@ -864,21 +857,49 @@ Graph *Graph::Kruskal()
     
     sort(arestaPesoAux.begin(), arestaPesoAux.end());
     
-    for(int i = 0; i < arestaPesoAux.size(); i++)
+    for(int i = 0; i < arestaPesoAux.size() -1; i++)
     {
-        for(int j = 0; j < arestaPeso.size(); i++)
+        for(int j = 0; j < arestaPeso.size() -1; i++)
         {
             if(arestaPesoAux[i] == arestaPeso[j])
             {
-                if(any_of(noDestinoAux.begin(), noDestinoAux.end(), arestaPesoAux[j]) == false)
-                
+                it1 = find(aux.begin(), aux.end(), noOrigem.at(j));
+                it2 = find(aux.begin(), aux.end(), noDestino.at(j));
+
+                if (it1 != noOrigem.end() && it2 != noDestino.end())
+                {
+                    noOrigemAux[i] = noOrigem[j];
+                    noDestinoAux[i] = noDestino[j];
+                    aux.push_back(noOrigem[j]);
+                    aux.push_back(noDestino[j]);
+                }
+                else
+                {
+                    if(it1 != noOrigem.end())
+                    {
                         noOrigemAux[i] = noOrigem[j];
                         noDestinoAux[i] = noDestino[j];
-                
+                        aux.push_back(noOrigem[j]);
+                    }
+                    if(it2 != noDestino.end())
+                    {
+                        noOrigemAux[i] = noOrigem[j];
+                        noDestinoAux[i] = noDestino[j];
+                        aux.push_back(noDestino[j]);
+                    }
+                }
             }
         }
     }
+
+    Graph* grafoKruskal = new Graph(this->order, this->directed, this->weighted_edge, this->weighted_node);
     
     
-   
+    int size = noOrigem.size() - 1;
+
+    for(int i = 0; i < size; i++)
+    {
+        grafoKruskal->insertEdge(noOrigem[i], noDestino[i], arestaPeso[i]);
+    }
+   return grafoKruskal;
 }
