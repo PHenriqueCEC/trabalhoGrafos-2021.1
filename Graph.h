@@ -53,7 +53,7 @@ public:
     void printGrafoDot(ofstream& file);
 
     //methods phase1
-    int mapping(int *map ,int index);
+    int mapping(int *map , int index);
     void topologicalSorting();
     void breadthFirstSearch(int idSource, int idTarget, ofstream &output_file);
     Graph *getVertexInduced(int *listIdNodes);
