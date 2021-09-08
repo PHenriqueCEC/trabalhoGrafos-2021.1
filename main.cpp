@@ -143,7 +143,7 @@ Graph *leituraInstancia(ifstream &input_file, int directed, int weightedEdge, in
     return graph;
 }
     
-int menu()
+int menu(Graph *graph)
 {
 
     int selecao;
@@ -162,12 +162,13 @@ int menu()
     cout << "[10] Algoritmo Guloso Randomizado " << endl;
     cout << "[11] Algoritmo Guloso Randomizado Reativo" << endl;
     cout << "[0] Sair" << endl;
-
+    cout << graph->getOrder();
+    cout << graph->getNumberEdges();
+    cout << graph->getNumberNodes();
     cin >> selecao;
 
     return selecao;
 }
-//16eil101.gr10
 void selecionar(int selecao, Graph *graph, ofstream &output_file)
 {
     switch (selecao)
@@ -373,7 +374,7 @@ int mainMenu(ofstream &output_file, Graph *graph)
     while (selecao != 0)
     {
         system("clear");
-        selecao = menu();
+        selecao = menu( graph);
 
         if (output_file.is_open())
             selecionar(selecao, graph, output_file);
