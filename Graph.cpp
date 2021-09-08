@@ -159,6 +159,13 @@ void Graph::insertEdge(int id, int target_id, float weight)
     this->number_edges++;
 }
 
+int Graph::mapping(int* map, int index) {
+    for(int i=0; i < order; i++) {
+        if(map[i] == index)
+            return i;
+    }
+}
+
 void Graph::removeNode(int id)
 {
     Node *p = getNode(id);
@@ -763,54 +770,63 @@ void Graph::greedRactiveRandom()
 
 void Graph::printGrafoDot(ofstream &file)
 {
-    //  ofstream grafoDotFile;
-    //  grafoDotFile.open(path,ios::in);
-
-    if (file.is_open())
-    {
+   if(file.is_open()) {
         cout << "Salvando o Grafo" << endl;
-        Node *no = this->first_node;
-        Edge *aresta;
-        file << "graph { \n";
-        while (no != nullptr)
-        {
-            aresta = no->getFirstEdge();
-            if (aresta != nullptr)
-            {
-                while (aresta != nullptr)
-                {
+        Node* no = this->first_node;
+        Node* node = this->first_node;
+        Edge* aresta;
 
-                    if (this->directed == 1)
-                    {
-                        file << "   " << no->getId() << "->" << aresta->getTargetId() << "\n";
-                    }
-                    else if (this->weighted_edge == 1)
-                    {
-                        file << "   " << no->getId() << "--" << aresta->getTargetId();
-                        file << " [label=" << aresta->getWeight() << ",weight=" << aresta->getWeight() << "]"
-                             << "\n";
-                    }
-                    else if (this->weighted_node == 1)
-                    {
-                    }
-                    else
-                    {
-                        file << "   " << no->getId() << "--" << aresta->getTargetId() << "\n";
+        int *map = new int[this->order];
+        bool *usados = new bool[this->order];
+        int i = 0;
+        while (node != nullptr) {
+            usados[i] = false;
+            map[i] = node->getId();
+            i++;
+            node = node->getNextNode();
+        }
+
+        if(this->directed == 1) {
+            file << "digraph { \n";
+        } else {
+            file << "graph { \n";
+        }
+
+        // Caso o nó tenha peso
+        if(this->weighted_node == 1) {
+            while (no != nullptr) {
+                file << "   " << no->getId() << " [weight = " << no->getWeight() <<  "] \n";
+                no = no->getNextNode();
+            }
+            no = this->first_node;
+        }
+        no = this->first_node;
+
+        while (no != nullptr) {
+            aresta = no->getFirstEdge();
+            usados[mapping(map, no->getId())] = true;
+                while (aresta != nullptr) {
+                    if(!usados[mapping(map, aresta->getTargetId())]){
+                        if( this->directed == 1) {
+                            file << "   " << no->getId() << "->" << aresta->getTargetId();
+                        } else {
+                            file << "   " << no->getId() << "--" << aresta->getTargetId();
+                        }
+                        if (this->weighted_edge == 1) {
+                            file << " [label=" << aresta->getWeight() <<",weight=" << aresta->getWeight() <<"]";
+                        }
+                        file << "\n";
                     }
                     aresta = aresta->getNextEdge();
                 }
-            }
             no = no->getNextNode();
         }
-        file << "}\n"
-             << endl;
-    }
-    else
-    {
+        file << "}\n" << endl;
+
+        cout << "Grafo armazanado no arquivo de saída "  << endl;
+    } else {
         cout << "Falha ao abrir o arquivo" << endl;
     }
-    file.close();
-
 }
 
 Graph *Graph::Kruskal(Graph *graph)
