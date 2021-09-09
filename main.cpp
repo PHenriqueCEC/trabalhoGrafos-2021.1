@@ -11,6 +11,12 @@
 #include "Node.h"
 #include <vector>
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 using namespace std;
 
 Graph *leitura(ifstream &input_file, int directed, int weightedEdge, int weightedNode,char const *argv[])
@@ -103,9 +109,11 @@ void leituraInstancia2(ifstream &input_file, int directed, int weightedEdge, int
                 graph->insertNode(contador);
                 nodeaux = graph->getNode(contador);
                 nodeaux->setCluster(cluster);
+                contador ++;
             }
-            contador ++;
-        }                    
+            
+        }
+                            
         if (aux != 0)
         {
             contador++;
@@ -153,9 +161,6 @@ Graph *leituraInstancia(ifstream &input_file, int directed, int weightedEdge, in
 
     //Criando objeto grafo
     Graph *graph = new Graph(order, directed, weightedEdge, weightedNode);
-    graph->insertNode(0);
-    graph->insertNode(1);
-    graph->insertEdge(0, 1, 1);
 
     return graph;
 
@@ -316,15 +321,14 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         cout << "Algoritmo Guloso" << endl;
 
         clock_t tInicio, tFim, tTotal;
-
+        
         tInicio = clock();
-        graph->greed();
+        graph->Kruskal(graph);
         tFim = clock();
 
-        tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
+        tTotal = ((tFim - tInicio)  /  (CLOCKS_PER_SEC / 1000)  );
 
         cout << "Tempo decorrido " << tTotal << "ms" << endl;
-
         break;
     }
 
@@ -373,7 +377,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         graph->greedRactiveRandom();
         tFim = clock();
 
-        tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
+        tTotal = ((tFim - tInicio) /* / (CLOCKS_PER_SEC / 1000) */);
 
         cout << "Tempo decorrido de " << tTotal << "ms" << endl;
 
@@ -398,7 +402,7 @@ int mainMenu(ofstream &output_file, Graph *graph)
 
     while (selecao != 0)
     {
-        system("clear");
+        //system("clear");
         selecao = menu(graph);
 
         if (output_file.is_open())
