@@ -813,7 +813,7 @@ void Graph::printGrafoDot(ofstream &file)
                             file << "   " << no->getId() << "--" << aresta->getTargetId();
                         }
                         if (this->weighted_edge == 1) {
-                            file << " [label=" << aresta->getWeight() <<",weight=" << aresta->getWeight() <<"]";
+                            file << " [label=" << aresta->getWeight() <<",weight=" << aresta->getWeight()<<"]";
                         }
                         file << "\n";
                     }
@@ -841,80 +841,134 @@ Graph *Graph::Kruskal(Graph *graph)
     vector<int> noDestinoAux;
     vector<float> arestaPesoAux;
     vector<int> aux;
+    int size =0;
+
+
 
     //interadores
-    Node *no = this->first_node;
-    Edge *aresta;
-    
+    Node *no = graph->getFirstNode();
+    Edge *aresta = no->getFirstEdge();
+    int co=0;
     while (no != nullptr)
-    {
-        if (aresta != nullptr)
-        {
+    {   
+        
             while (aresta != nullptr)
             {
                 noOrigem.push_back(no->getId());
                 noDestino.push_back(aresta->getTargetId());
                 arestaPeso.push_back(aresta->getWeight());
                 aresta = aresta->getNextEdge();
+                co++;
             }
-        }
         no = no->getNextNode();
+        if (no != nullptr)
+        {
+            aresta = no->getFirstEdge();
+        }
     }
+
     ////////////////////////ordenando os trem/////////////////////////
-    noOrigem.resize((noOrigem.size()+1));
-    noDestino.resize((noOrigem.size()+1));
+
+    noOrigem.push_back(-1);
+    noDestino.push_back(-1);
+    
     std::vector<int>::iterator it1;
     std::vector<int>::iterator it2;
-    for (int i = 0; i < noOrigem.size(); i++)
-    {
-        arestaPesoAux.push_back(arestaPeso[i]);
-    }
-    
+    cout << arestaPesoAux.size() << endl;
+
+    arestaPesoAux = arestaPeso;
+
+    cout << aux.size() << endl;
+
     sort(arestaPesoAux.begin(), arestaPesoAux.end());
-    
-    for(int i = 0; i < arestaPesoAux.size() -1; i++)
+    int fristloop = 0;
+    for(int i = 0; i < arestaPesoAux.size() -2; i++)
     {
-        for(int j = 0; j < arestaPeso.size() -1; i++)
+        for(int j = 0; j < arestaPeso.size() -2; j++)
         {
             if(arestaPesoAux[i] == arestaPeso[j])
             {
+                if (fristloop ==0)
+                {
+                    fristloop++;
+                    aux.insert(aux.begin(),1,noOrigem[j]);
+                    aux.insert(aux.begin(),1,noDestino[j]);
+                    aux.push_back(-1);
+                    for (int pla = 0; pla < aux.size(); pla++)
+                    {
+                        cout << aux[i] << " ";
+                    }
+                    
+                }
                 it1 = find(aux.begin(), aux.end(), noOrigem.at(j));
                 it2 = find(aux.begin(), aux.end(), noDestino.at(j));
-
-                if (it1 != noOrigem.end() && it2 != noDestino.end())
+                if (it1 != aux.end())
                 {
-                    noOrigemAux[i] = noOrigem[j];
-                    noDestinoAux[i] = noDestino[j];
-                    aux.push_back(noOrigem[j]);
-                    aux.push_back(noDestino[j]);
+                    
+                    if (it2 != aux.end())
+                    {
+                        // não adicionar nada pois já existe essa aresta ou opção melhor
+                    }
+                    else
+                    {
+                        cout << "Origem" << endl;
+                        // adicionar aresta pois só vertice da origem está presente na lista
+                        
+                        aux.insert(aux.begin(),1,noDestino[j]);
+                        noOrigemAux.push_back(noOrigem[j]);
+                        noDestinoAux.push_back(noDestino[j]);
+                    }
                 }
                 else
                 {
-                    if(it1 != noOrigem.end())
+                    if (it2 != aux.end())
                     {
-                        noOrigemAux[i] = noOrigem[j];
-                        noDestinoAux[i] = noDestino[j];
-                        aux.push_back(noOrigem[j]);
+                        cout << "destino" << endl;
+                        // adicionar aresta por apenas vertice de Destino estar presente na lista
+                        
+                        aux.insert(aux.begin(),1,noOrigem[j]);
+                        noOrigemAux.push_back(noOrigem[j]);
+                        noDestinoAux.push_back(noDestino[j]);
                     }
-                    if(it2 != noDestino.end())
+                    else
                     {
-                        noOrigemAux[i] = noOrigem[j];
-                        noDestinoAux[i] = noDestino[j];
-                        aux.push_back(noDestino[j]);
+                        cout << "adicionando os dois" << endl;
+                        //adicionar ambos por nenhum dos dois estarem presentes
+                        aux.insert(aux.begin(),1,noOrigem[j]);
+                        aux.insert(aux.begin(),1,noDestino[j]);
+                        noOrigemAux.push_back(noOrigem[j]);
+                        noDestinoAux.push_back(noDestino[j]);
                     }
                 }
+                arestaPeso[j] = -1;
+                break;                
             }
-        }
+        }   
+         
     }
 
+    sort(arestaPeso.begin(),arestaPeso.end());
+    for (int kaka = 0; kaka < arestaPeso.size(); kaka++)
+    {
+        cout << arestaPeso[kaka] << " " << noOrigemAux[kaka] << " " << noDestinoAux[kaka] << " " << arestaPesoAux[kaka] << endl;
+    }
+    cout << endl;
     Graph* grafoKruskal = new Graph(this->order, this->directed, this->weighted_edge, this->weighted_node);
     
     
-    int size = noOrigem.size() - 1;
-
-    for(int i = 0; i < size; i++)
+   
+    for(int i = 0; i < noOrigemAux.size(); i++)
     {
-        grafoKruskal->insertEdge(noOrigem[i], noDestino[i], arestaPeso[i]);
-    }
+        grafoKruskal->insertEdge(noOrigemAux[i], noDestinoAux[i], arestaPesoAux[i]);
+    } 
+    cout << grafoKruskal->getNumberEdges() << " numbernodes: " << grafoKruskal->getNumberNodes() << endl;
+
+    std::ofstream saidaKruskal ("Guloso.txt",std::ofstream::out);
+
+    grafoKruskal->printGrafoDot(saidaKruskal);
+
+    saidaKruskal.close();
+
    return grafoKruskal;
 }
+    
