@@ -61,8 +61,8 @@ public:
     void agmPrim(int idSource);
     float floydMarshall(int idSource, int idTarget);
     float *dijkstra(int idSource, int idTarget);
-    vector<int> depthFirstSearch(vector<int> vertexVector, int idSource, int graphOrder,
-                                 int *count);
+    bool dfsaux(Node *no,Edge *aresta,int idTarget);
+    bool depthFirstSearch(int idSource, int idTarget);
     vector<int> auxDepth(vector<int> vertexVector, int idNode, int *count);
     
     //methods phase1
