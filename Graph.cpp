@@ -248,9 +248,6 @@ Node *Graph::nodeNotExist(Node *p, Graph *graph)
 //Function that prints a set of edges belongs breadth tree
 void Graph::breadthFirstSearch(int idSource, int idTarget, ofstream &output_file)
 {
-    Node *initial_node = getNode(idSource);
-    Node *target_node = getNode(idTarget);
-
     if (initial_node == nullptr || target_node == nullptr)
     {
         cout << "Noh inicial ou noh final nao existe no grafo!" << endl;
@@ -265,7 +262,7 @@ void Graph::breadthFirstSearch(int idSource, int idTarget, ofstream &output_file
 
     node_deque.push_back(initial_node);
 
-    while (!node_deque.empty())
+    while (node)
     {
         for (Edge *edge = node_deque.front()->getFirstEdge(); edge != nullptr; edge = edge->getNextEdge())
         {
@@ -524,90 +521,36 @@ void topologicalSorting()
 {
 }
 
-//Funcao recursiva onde, a partir de idSource, fazemos o caminhamento mais
-//profundo possivel
-vector<int> Graph::depthFirstSearch(vector<int> vertexVector, int idSource, int graphOrder, int *count)
+//Funcao recursiva onde, a partir de idSource, fazemos o caminho para procurar target dando prioridade a profundidade
+bool Graph::dfsaux(Node *no,Edge *aresta,int idTarget)
 {
-    if (!searchNode(idSource))
+    if(no == nullptr)
     {
-        cout << "idSource nao existe no grafo!" << endl;
-        return vertexVector;
+        return false;
+    }
+    else
+    {
+        
+        if(aresta->getTargetId() == idTarget)
+            return true;
+        no = this->getNode(aresta->getTargetId())
+        
+    }
+}
+
+bool Graph::depthFirstSearch(int idSource, int idTarget)
+{
+    vector<bool> visitados (this->getOrder(),false);
+
+    if (!searchNode(idSource) || !searchNode(idTarget))
+    {
+        cout << "idSource ou idTarget nao existe no grafo!" << endl;
+        return false;
     }
 
-    vertexVector = initializeVertexVector(vertexVector);
+    Node *no = this->getNode(idSource);
+    Edge *aresta = no->getFirstEdge();
 
-    for (list<Node>::iterator it = vertex->begin(); it != vertex->end(); ++it)
-    {
-        if (it->getId() == idSource)
-        {
-            cout << "Vertice atual " << it->getId() << endl;
-
-            Node *p;
-            vertexVector = auxDepth(vertexVector, it->getId(), count);
-
-            if (it->getNextNode() != 0) //existe o noh;
-            {
-                p = new Node(it->getNextNode()->getId());
-
-                if (it->getNextNode()->getNextNode() != 0)
-                {
-                    p->setNextNode(it->getNextNode()->getNextNode());
-                }
-            }
-
-            //verifica se o grafo ja foi visitado por completo
-            if (*count == graphOrder)
-            {
-                delete p;
-                return vertexVector;
-            }
-            int current_vertex = it->getId();
-
-            //caminha pelos vertices enquanto tiver um noh adjacente
-            while (true)
-            {
-                int j = 0;
-
-                for (vector<int>::iterator it = vertexVector.begin(); it != vertexVector.end(); ++it)
-                {
-
-                    if (p->getId() == vertexVector[j])
-                    {
-                        if (p->getNextNode() == 0)
-                        {
-                            return vertexVector;
-                        }
-                        p->setId(p->getNextNode()->getId());
-
-                        if (p->getNextNode()->getNextNode() != 0)
-                        {
-                            p->setNextNode(p->getNextNode()->getNextNode());
-                        }
-                        else
-                        {
-                            p->setNextNode(nullptr);
-                        }
-                        break;
-                    }
-                    j++;
-
-                    //chamada recursiva
-                    if (j == vertexVector.size())
-                    {
-                        vertexVector = depthFirstSearch(vertexVector, graphOrder, p->getId(), count);
-                        cout << "Retornou para o vertice " << current_vertex << endl;
-                        if (*count == graphOrder)
-                        {
-                            delete p;
-                            return vertexVector;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    return vertexVector;
 }
 
 //Inicialzia com -1 a lista de vertice
@@ -837,8 +780,6 @@ Graph *Graph::Kruskal(Graph *graph)
     vector<float> arestaPeso;
 
     //estrutura resolução
-    vector<int> noOrigemAux;
-    vector<int> noDestinoAux;
     vector<float> arestaPesoAux;
     vector<int> aux;
     int size =0;
@@ -868,7 +809,7 @@ Graph *Graph::Kruskal(Graph *graph)
     }
 
     ////////////////////////ordenando os trem/////////////////////////
-
+    Graph* grafoKruskal = new Graph(this->order, this->directed, this->weighted_edge, this->weighted_node);
     noOrigem.push_back(-1);
     noDestino.push_back(-1);
     
@@ -881,24 +822,22 @@ Graph *Graph::Kruskal(Graph *graph)
     cout << aux.size() << endl;
 
     sort(arestaPesoAux.begin(), arestaPesoAux.end());
+    unique(arestaPesoAux.begin(),arestaPesoAux.end());
     int fristloop = 0;
+
     for(int i = 0; i < arestaPesoAux.size() -2; i++)
     {
         for(int j = 0; j < arestaPeso.size() -2; j++)
         {
             if(arestaPesoAux[i] == arestaPeso[j])
             {
-                if (fristloop ==0)
+                if (fristloop == 0)
                 {
                     fristloop++;
                     aux.insert(aux.begin(),1,noOrigem[j]);
                     aux.insert(aux.begin(),1,noDestino[j]);
                     aux.push_back(-1);
-                    for (int pla = 0; pla < aux.size(); pla++)
-                    {
-                        cout << aux[i] << " ";
-                    }
-                    
+                    grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPesoAux[j]);
                 }
                 it1 = find(aux.begin(), aux.end(), noOrigem.at(j));
                 it2 = find(aux.begin(), aux.end(), noDestino.at(j));
@@ -908,6 +847,28 @@ Graph *Graph::Kruskal(Graph *graph)
                     if (it2 != aux.end())
                     {
                         // não adicionar nada pois já existe essa aresta ou opção melhor
+                        if(bfs(!= false))
+                            grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
+
+                            while (no != nullptr)
+                            {   
+                                
+                                    while (aresta != nullptr)
+                                    {
+                                        noOrigem.push_back(no->getId());
+                                        noDestino.push_back(aresta->getTargetId());
+                                        arestaPeso.push_back(aresta->getWeight());
+                                        aresta = aresta->getNextEdge();
+                                        co++;
+                                    }
+                                no = no->getNextNode();
+                                if (no != nullptr)
+                                {
+                                    aresta = no->getFirstEdge();
+                                }
+                            }
+                            
+                    
                     }
                     else
                     {
@@ -915,8 +876,7 @@ Graph *Graph::Kruskal(Graph *graph)
                         // adicionar aresta pois só vertice da origem está presente na lista
                         
                         aux.insert(aux.begin(),1,noDestino[j]);
-                        noOrigemAux.push_back(noOrigem[j]);
-                        noDestinoAux.push_back(noDestino[j]);
+                        grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
                     }
                 }
                 else
@@ -927,8 +887,7 @@ Graph *Graph::Kruskal(Graph *graph)
                         // adicionar aresta por apenas vertice de Destino estar presente na lista
                         
                         aux.insert(aux.begin(),1,noOrigem[j]);
-                        noOrigemAux.push_back(noOrigem[j]);
-                        noDestinoAux.push_back(noDestino[j]);
+                        grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPesoAux[j]);
                     }
                     else
                     {
@@ -936,12 +895,9 @@ Graph *Graph::Kruskal(Graph *graph)
                         //adicionar ambos por nenhum dos dois estarem presentes
                         aux.insert(aux.begin(),1,noOrigem[j]);
                         aux.insert(aux.begin(),1,noDestino[j]);
-                        noOrigemAux.push_back(noOrigem[j]);
-                        noDestinoAux.push_back(noDestino[j]);
+                        grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
                     }
-                }
-                arestaPeso[j] = -1;
-                break;                
+                }               
             }
         }   
          
@@ -950,18 +906,9 @@ Graph *Graph::Kruskal(Graph *graph)
     sort(arestaPeso.begin(),arestaPeso.end());
     for (int kaka = 0; kaka < arestaPeso.size(); kaka++)
     {
-        cout << arestaPeso[kaka] << " " << noOrigemAux[kaka] << " " << noDestinoAux[kaka] << " " << arestaPesoAux[kaka] << endl;
+        cout << arestaPeso[kaka] << endl;
     }
     cout << endl;
-    Graph* grafoKruskal = new Graph(this->order, this->directed, this->weighted_edge, this->weighted_node);
-    
-    
-   
-    for(int i = 0; i < noOrigemAux.size(); i++)
-    {
-        grafoKruskal->insertEdge(noOrigemAux[i], noDestinoAux[i], arestaPesoAux[i]);
-    } 
-    cout << grafoKruskal->getNumberEdges() << " numbernodes: " << grafoKruskal->getNumberNodes() << endl;
 
     std::ofstream saidaKruskal ("Guloso.txt",std::ofstream::out);
 

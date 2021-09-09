@@ -170,7 +170,7 @@ int menu(Graph *graph)
 {
 
     int selecao;
-
+ 
     cout << "MENU" << endl;
     cout << "----" << endl;
     cout << "[1] Subgrafo induzido por conjunto de vértices" << endl;
@@ -185,9 +185,6 @@ int menu(Graph *graph)
     cout << "[10] Algoritmo Guloso Randomizado " << endl;
     cout << "[11] Algoritmo Guloso Randomizado Reativo" << endl;
     cout << "[0] Sair" << endl;
-    cout << graph->getOrder() << endl;
-    cout << graph->getNumberEdges() << endl;
-    cout << graph->getNumberNodes() << endl;
     cin >> selecao;
 
     return selecao; 
@@ -377,7 +374,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         graph->greedRactiveRandom();
         tFim = clock();
 
-        tTotal = ((tFim - tInicio) /* / (CLOCKS_PER_SEC / 1000) */);
+        tTotal = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
 
         cout << "Tempo decorrido de " << tTotal << "ms" << endl;
 
@@ -399,15 +396,16 @@ int mainMenu(ofstream &output_file, Graph *graph)
 {
 
     int selecao = 1;
-
+    int fordebug=0;
     while (selecao != 0)
     {
         //system("clear");
         selecao = menu(graph);
 
         if (output_file.is_open())
+        {
             selecionar(selecao, graph, output_file);
-
+        }
         else
             cout << "Unable to open the output_file" << endl;
 
