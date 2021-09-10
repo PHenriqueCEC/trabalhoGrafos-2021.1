@@ -580,22 +580,28 @@ void Graph::dfsaux(Node *no, int idTarget, vector<bool> &visitados)
         return;
     }
     
-    visitados[no->getId()] = true;
+    
     Edge *aresta = no->getFirstEdge();
    
     while (aresta != nullptr)
     {
         if (visitados[aresta->getTargetId()] == false)
         {
-        //    for (int ki = 0; ki < visitados.size(); ki++)
-        //    {
-        //        cout << visitados[ki] << "  ";
-        //    }
+            for (int ki = 0; ki < visitados.size(); ki++)
+            {
+                cout << visitados[ki] << "  ";
+            }
             
-        //    cout << "    " << no->getId() << "  " << aresta->getTargetId() << endl;
-            dfsaux(this->getNode(aresta->getTargetId()), idTarget, visitados);
-            
+            cout << "    " << no->getId() << "  " << aresta->getTargetId() << endl;
             if (aresta->getNextEdge() == nullptr)
+            {
+                return;
+            }
+            
+            
+            visitados[aresta->getTargetId()] = true; 
+            dfsaux(this->getNode(aresta->getTargetId()), idTarget, visitados);
+            if (visitados[idTarget] == true)
             {
                 return;
             }
@@ -607,7 +613,7 @@ void Graph::dfsaux(Node *no, int idTarget, vector<bool> &visitados)
 //Funcao recursiva onde, a partir de idSource, fazemos o caminho para procurar target dando prioridade a profundidade
 bool Graph::depthFirstSearch(int idSource, int idTarget)
 {
-//    cout << "Origem : " << idSource << "Alvo : " << idTarget <<endl;
+    cout << "Origem : " << idSource << "Alvo : " << idTarget <<endl;
     vector<bool> visitados(this->getOrder(), false);
 
     if (!searchNode(idSource) || !searchNode(idTarget))
@@ -618,7 +624,7 @@ bool Graph::depthFirstSearch(int idSource, int idTarget)
 
     Node *no = this->getNode(idSource);
     Edge *aresta = no->getFirstEdge();
-
+    visitados[idSource] = true;
     dfsaux(no, idTarget, visitados);
     if (visitados[idTarget] == true)
         return true;
@@ -635,7 +641,6 @@ vector<int> Graph::initializeVertexVector(vector<int> &vertexVector)
         vertexVector[i] = -1;
         i++;
     }
-
     return vertexVector;
 }
 
@@ -920,7 +925,7 @@ Graph *Graph::Kruskal(Graph *graph)
                     fristloop++;
                     aux.insert(aux.begin(), 1, noOrigem[j]);
                     aux.insert(aux.begin(), 1, noDestino[j]);
-                    aux.push_back(-1);
+                   // aux.push_back(-1);
                     grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
                 }
                 it1 = find(aux.begin(), aux.end(), noOrigem.at(j));
@@ -931,19 +936,20 @@ Graph *Graph::Kruskal(Graph *graph)
                     if (it2 != aux.end())
                     {   
                         // não adicionar nada pois já existe essa aresta ou opção melhor
-                       // cout << " os nos sao : ";
+                        cout << " os nos sao : ";
                         for (int mi = 0; mi < this->getNumberNodes(); mi++)
                         {
-                       //     cout << this->getNode(mi)->getId() << " ";
+                            cout << this->getNode(mi)->getId() << " ";
                         }
-                       // cout << endl;
+                        cout << endl;
                         if (!depthFirstSearch(noOrigem[j], noDestino[j]))
                         {
                             grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
-                       //     cout << "BFS negativo" << endl;
+                            cout << "BFS negativo" << endl;
                         }
-                        else{}
-                        //    cout << "BFS positivo" << endl;
+                        else{
+                            cout << "BFS positivo" << endl;
+                        }
                     }
                     else
                     {
