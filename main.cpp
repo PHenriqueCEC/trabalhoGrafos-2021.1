@@ -277,10 +277,11 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         cout << "Busca em largura" << endl;
         int idSource, idTarget;
 
-        cout << "Digite o vertice inicial e o vertice final para a busca em largura!" << endl;
-        cin >> idSource >> idTarget;
+        /* cout << "Digite o vertice inicial e o vertice final para a busca em largura!" << endl;
+        cin >> idSource >> idTarget; */
 
-        graph->breadthFirstSearch(idSource, idTarget, output_file);
+        //graph->breadthFirstSearch(idSource, idTarget, output_file);
+        //graph->bfs(2, 4);
 
         break;
     }
@@ -308,8 +309,8 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         //Lista de vertice
         vector<int> vertex_vector(graph->getOrder());
 
-        vertex_vector = graph->depthFirstSearch(vertex_vector, idSource, graph->getOrder(),
-                                                &count);
+        //vertex_vector = graph->depthFirstSearch(vertex_vector, idSource, graph->getOrder(),
+          //                                      &count);
         break;
     }
 
