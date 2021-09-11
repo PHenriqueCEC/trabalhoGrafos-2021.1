@@ -912,74 +912,89 @@ Graph *Graph::Kruskal(Graph *graph)
 
     sort(arestaPesoAux.begin(), arestaPesoAux.end());
     unique(arestaPesoAux.begin(), arestaPesoAux.end());
-    int fristloop = 0;
+    int loops = 0;
 
     for (int i = 0; i < arestaPesoAux.size() - 2; i++)
     {
         for (int j = 0; j < arestaPeso.size() - 2; j++)
         {
-            if (arestaPesoAux[i] == arestaPeso[j])
-            {
-                if (fristloop == 0)
+           
+                
+                if (arestaPesoAux[i] == arestaPeso[j])
                 {
-                    fristloop++;
-                    aux.insert(aux.begin(), 1, noOrigem[j]);
-                    aux.insert(aux.begin(), 1, noDestino[j]);
-                   // aux.push_back(-1);
-                    grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
-                }
-                it1 = find(aux.begin(), aux.end(), noOrigem.at(j));
-                it2 = find(aux.begin(), aux.end(), noDestino.at(j));
-                if (it1 != aux.end())
-                {
-
-                    if (it2 != aux.end())
-                    {   
-                        // não adicionar nada pois já existe essa aresta ou opção melhor
-                        cout << " os nos sao : ";
-                        for (int mi = 0; mi < this->getNumberNodes(); mi++)
-                        {
-                            cout << this->getNode(mi)->getId() << " ";
-                        }
-                        cout << endl;
-                        if (!depthFirstSearch(noOrigem[j], noDestino[j]))
-                        {
-                            grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
-                            cout << "BFS negativo" << endl;
-                        }
-                        else{
-                            cout << "BFS positivo" << endl;
-                        }
-                    }
-                    else
+                    if (loops == 0)
                     {
-                        //cout << "Origem" << endl;
-                        // adicionar aresta pois só vertice da origem está presente na lista
-
-                        aux.insert(aux.begin(), 1, noDestino[j]);
-                        grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
-                    }
-                }
-                else
-                {
-                    if (it2 != aux.end())
-                    {
-                       // cout << "destino" << endl;
-                        // adicionar aresta por apenas vertice de Destino estar presente na lista
-
+                        loops++;
                         aux.insert(aux.begin(), 1, noOrigem[j]);
+                        aux.insert(aux.begin(), 1, noDestino[j]);
+                        // aux.push_back(-1);
                         grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
                     }
                     else
                     {
-                       // cout << "adicionando os dois" << endl;
-                        //adicionar ambos por nenhum dos dois estarem presentes
-                        aux.insert(aux.begin(), 1, noOrigem[j]);
-                        aux.insert(aux.begin(), 1, noDestino[j]);
-                        grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
+
+                        
+                        it1 = find(aux.begin(), aux.end(), noOrigem.at(j));
+                        it2 = find(aux.begin(), aux.end(), noDestino.at(j)); 
+                        if (this->getOrder()*2 >= loops)
+                        {
+                            if (it1 != aux.end())
+                            {
+
+                            if (it2 != aux.end())
+                            {   
+                                // não adicionar nada pois já existe essa aresta ou opção melhor
+                                cout << " os nos sao : ";
+                                for (int mi = 0; mi < this->getNumberNodes(); mi++)
+                                {
+                                    cout << this->getNode(mi)->getId() << " ";
+                                }
+                                cout << endl;
+                                if (depthFirstSearch(noOrigem[j], noDestino[j]))
+                                {
+                                    grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
+                                    loops++;
+                                    cout << "BFS negativo" << endl;
+                                }
+                                else{
+                                    cout << "BFS positivo" << endl;
+                                }
+                            }
+                                else
+                                {
+                                    //cout << "Origem" << endl;
+                                    // adicionar aresta pois só vertice da origem está presente na lista
+
+                                    aux.insert(aux.begin(), 1, noDestino[j]);
+                                    grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
+                                    loops++;
+                                }
+                            }
+                            else
+                            {
+                                if (it2 != aux.end())
+                                {
+                                // cout << "destino" << endl;
+                                    // adicionar aresta por apenas vertice de Destino estar presente na lista
+
+                                    aux.insert(aux.begin(), 1, noOrigem[j]);
+                                    grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
+                                    loops++;
+                                }
+                                else
+                                {
+                                // cout << "adicionando os dois" << endl;
+                                    //adicionar ambos por nenhum dos dois estarem presentes
+                                    aux.insert(aux.begin(), 1, noOrigem[j]);
+                                    aux.insert(aux.begin(), 1, noDestino[j]);
+                                    grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
+                                    loops++;
+                                }
+                        
+                            }
+                        }
                     }
                 }
-            }
         }
     }
 
