@@ -57,7 +57,7 @@ public:
     void topologicalSorting();
     void breadthFirstSearch(int idSource, int idTarget, ofstream &output_file);
     Graph *getVertexInduced(int *listIdNodes);
-    Graph *Kruskal(Graph *graph);
+    Graph *greed(Graph *graph);
     void agmPrim(int idSource);
     float floydMarshall(int idSource, int idTarget);
     float *dijkstra(int idSource, int idTarget);
@@ -67,7 +67,7 @@ public:
     bool bfs(int inicio, int fim);
     
     //methods phase1
-    void greed();
+    Graph *greed(Graph *graph);
     void greedRandom(float *alphaValues, int numAlpha, int repetitions);
     void greedRactiveRandom();
 

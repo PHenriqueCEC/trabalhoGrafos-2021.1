@@ -760,10 +760,6 @@ void Graph::printPrimTree()
     }
 }
 
-void Graph::greed()
-{
-}
-
 void Graph::greedRandom(float *alphaValues, int numAlpha, int repetitions)
 {
     for (int i = 0; i < numAlpha; i++)
@@ -859,7 +855,7 @@ void Graph::printGrafoDot(ofstream &file)
     }
 }
 
-Graph *Graph::Kruskal(Graph *graph)
+Graph *Graph::greed(Graph *graph)
 {
     //estrutura inicial
     vector<int> noOrigem;
