@@ -587,12 +587,7 @@ void Graph::dfsaux(Node *no, int idTarget, vector<bool> &visitados)
     {
         if (visitados[aresta->getTargetId()] == false)
         {
-            for (int ki = 0; ki < visitados.size(); ki++)
-            {
-                cout << visitados[ki] << "  ";
-            }
-            
-            cout << "    " << no->getId() << "  " << aresta->getTargetId() << endl;
+       
             if (aresta->getNextEdge() == nullptr)
             {
                 return;
@@ -613,7 +608,6 @@ void Graph::dfsaux(Node *no, int idTarget, vector<bool> &visitados)
 //Funcao recursiva onde, a partir de idSource, fazemos o caminho para procurar target dando prioridade a profundidade
 bool Graph::depthFirstSearch(int idSource, int idTarget)
 {
-    cout << "Origem : " << idSource << "Alvo : " << idTarget <<endl;
     vector<bool> visitados(this->getOrder(), false);
 
     if (!searchNode(idSource) || !searchNode(idTarget))
@@ -792,17 +786,16 @@ void Graph::printGrafoDot(ofstream &file)
 {
     if (file.is_open())
     {
-        cout << "Salvando o Grafo" << endl;
-        Node *no = this->first_node;
-        Node *node = this->first_node;
         Edge *aresta;
-
+        Node *node = this->first_node;
+        Node *no = this->first_node;
         int *map = new int[this->order];
-        bool *usados = new bool[this->order];
+        bool *visitados = new bool[this->order];
         int i = 0;
+
         while (node != nullptr)
         {
-            usados[i] = false;
+            visitados[i] = false;
             map[i] = node->getId();
             i++;
             node = node->getNextNode();
@@ -832,10 +825,10 @@ void Graph::printGrafoDot(ofstream &file)
         while (no != nullptr)
         {
             aresta = no->getFirstEdge();
-            usados[mapping(map, no->getId())] = true;
+            visitados[mapping(map, no->getId())] = true;
             while (aresta != nullptr)
             {
-                if (!usados[mapping(map, aresta->getTargetId())])
+                if (!visitados[mapping(map, aresta->getTargetId())])
                 {
                     if (this->directed == 1)
                     {
@@ -858,7 +851,7 @@ void Graph::printGrafoDot(ofstream &file)
         file << "}\n"
              << endl;
 
-        cout << "Grafo armazanado no arquivo de saída " << endl;
+        cout << "Grafo armazanado no arquivo Guloso.txt " << endl;
     }
     else
     {
@@ -872,11 +865,11 @@ Graph *Graph::Kruskal(Graph *graph)
     vector<int> noOrigem;
     vector<int> noDestino;
     vector<float> arestaPeso;
-
-    //estrutura resolução
     vector<float> arestaPesoAux;
     vector<int> aux;
     int size = 0;
+
+    //estrutura resolução
 
     //interadores
     Node *no = graph->getFirstNode();
@@ -944,20 +937,10 @@ Graph *Graph::Kruskal(Graph *graph)
                             if (it2 != aux.end())
                             {   
                                 // não adicionar nada pois já existe essa aresta ou opção melhor
-                                cout << " os nos sao : ";
-                                for (int mi = 0; mi < this->getNumberNodes(); mi++)
-                                {
-                                    cout << this->getNode(mi)->getId() << " ";
-                                }
-                                cout << endl;
                                 if (depthFirstSearch(noOrigem[j], noDestino[j]))
                                 {
                                     grafoKruskal->insertEdge(noOrigem[j], noDestino[j], arestaPeso[j]);
                                     loops++;
-                                    cout << "BFS negativo" << endl;
-                                }
-                                else{
-                                    cout << "BFS positivo" << endl;
                                 }
                             }
                                 else
