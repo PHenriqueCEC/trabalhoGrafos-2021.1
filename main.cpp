@@ -321,7 +321,7 @@ void selecionar(int selecao, Graph *graph, ofstream &output_file)
         clock_t tInicio, tFim, tTotal;
         
         tInicio = clock();
-        graph->Kruskal(graph);
+        graph->greed(graph);
         tFim = clock();
 
         tTotal = ((tFim - tInicio)  /  (CLOCKS_PER_SEC / 1000)  );
